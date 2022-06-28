@@ -1,0 +1,49 @@
+---- Tabel ----
+Ticket
+- subject
+- tim penerima (team)
+- nama pengirim
+- email pengirim
+- nomor telepon pengirim
+- priority (pake tiga bintang)
+- tipe tiket => question / issue
+- deskripsi
+- status => in progress, solved, cancelled
+- id employee
+
+Customer
+- Nama
+- Email
+- Phone
+
+account
+- id employee
+- password
+
+Employee
+- nama
+- email
+- id team lead
+
+user_ticket:
+- id team lead
+- id tiket
+
+------------------------------------
+Fitur:
+- Menambah tiket
+- Edit tiket
+- Hapus tiket
+- Melihat tiket yang terkirim
+- Melihat tiket yang dikirim
+- Mengubah status tiket
+- Menambah tim
+- Mengubah penerima tim
+- Login / Register
+
+----------------------------------------
+Link diagram:
+https://drive.google.com/file/d/1A2BxbRsxQWHUSdld0XnXypHKbUbyvJ1P/view?usp=sharing
+
+
+
