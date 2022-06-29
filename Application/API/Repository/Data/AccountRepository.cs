@@ -2,9 +2,15 @@
 using API.Context;
 using API.Models;
 using API.Models.VM;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using BC = BCrypt.Net.BCrypt;
 
@@ -12,9 +18,11 @@ namespace API.Repository.Data
 {
     public class AccountRepository : GeneralRepository<MyContext, Account, string>
     {
+        public IConfiguration _config;
         private readonly MyContext context;
-        public AccountRepository(MyContext context) : base(context)
+        public AccountRepository(IConfiguration config, MyContext context) : base(context)
         {
+            this._config = config;
             this.context = context;
         }
 
@@ -155,6 +163,88 @@ namespace API.Repository.Data
                 email.Send(email.EmailSender, register.Email, "Your password", "Your password is " + password);
                 return result;
             }
+        }
+
+        public ResponseObj doAuth(LoginVM obj)
+        {
+            ResponseObj objResp = new ResponseObj();
+            List<Role> listRoles = new List<Role>();
+            var idToken = string.Empty;
+
+            Employee empObj = (from emp in context.Employees
+                               where emp.EmployeeEmail == obj.Email
+                               select emp).FirstOrDefault();
+
+            Customer custObj = (from cust in context.Customers
+                                where cust.CustomerEmail == obj.Email
+                                select cust).FirstOrDefault();
+
+            string id = "";
+
+            if (empObj != null)
+            {
+                id = empObj.EmployeeId;
+            }
+            else if (custObj != null)
+            {
+                id = custObj.CustomerId;
+            }
+            else
+            {
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+                objResp.message = "Email tidak terdaftar.";
+                objResp.data = null;
+
+                return objResp;
+            }
+
+            Account accObj = (from acc in context.Accounts
+                              where acc.Id == id
+                              select acc).FirstOrDefault();
+
+            if (!BC.Verify(obj.Password, accObj.Password))
+            {
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+                objResp.message = "Password salah.";
+                objResp.data = null;
+            }
+            else
+            {
+                listRoles = (from a in context.Accounts
+                             join b in context.AccountRoles
+                             on a.Id equals b.AccountId
+                             join c in context.Roles
+                             on b.RoleId equals c.RoleId
+                             where a.Id == accObj.Id
+                             select c).ToList();
+
+                var claims = new List<Claim>();
+                claims.Add(new Claim("Email", obj.Email));
+
+                foreach (var roles in listRoles)
+                {
+                    claims.Add(new Claim("roles", roles.RoleName));
+                }
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+                var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var token = new JwtSecurityToken(
+                    _config["Jwt:Issuer"],
+                    _config["Jwt:Audience"],
+                    claims,
+                    expires: DateTime.Now.AddMinutes(10),
+                    signingCredentials: signIn
+                    );
+
+                idToken = new JwtSecurityTokenHandler().WriteToken(token);
+                claims.Add(new Claim("TokenSecurity", idToken.ToString()));
+
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.OK);
+                objResp.message = "Berhasil login.";
+                objResp.data = idToken;
+            }
+
+            return objResp;
         }
     }
 }

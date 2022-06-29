@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Not Found";
+    Layout = "ErrorLayout";
+}
+
+<div class="container-fluid mt-5">
+
+    <div class="text-center">
+        <div class="error mx-auto" data-text="404">404</div>
+        <p class="lead text-gray-800 mb-5">Not Found</p>
+        <p class="text-gray-500 mb-0">Keep looking, maybe it's here somewhere!</p>
+        <p id="textCounter" class="text-gray-500 mb-0"></p>
+    </div>
+
+</div>
+
+@section CSS {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+}
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="~/js/WorkerChart.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/Error.js"></script>
+}

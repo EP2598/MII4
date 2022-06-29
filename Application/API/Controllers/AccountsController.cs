@@ -35,5 +35,12 @@ namespace API.Controllers
                 return StatusCode(200, new { status = HttpStatusCode.OK, message = "Inserted Data Successed!" });
             }
         }
+
+        [HttpPost("Login")]
+        public ActionResult Auth(LoginVM obj)
+        {
+            ResponseObj objResp = repository.doAuth(obj);
+            return StatusCode(objResp.statusCode, objResp);
+        }
     }
 }
