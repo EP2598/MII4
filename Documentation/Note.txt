@@ -45,5 +45,18 @@ Fitur:
 Link diagram:
 https://drive.google.com/file/d/1A2BxbRsxQWHUSdld0XnXypHKbUbyvJ1P/view?usp=sharing
 
+----------------------------------------
+Role:
+1. Admin
+2. Team lead
+3. Developer
+4. Customer
+
+-----------------------------------------
+Halaman:
+1. Dashboard (admin)--> tabel tiket (bisa update status), add user
+2. Dashboard (customer) --> Halaman isi tiket (kaya oodo), isinya card ticket
+3. Dashboard (team lead) --> sama kaya customer tapi bisa update status, escalate ticket pake modal
+4. Halaman login
 
 
