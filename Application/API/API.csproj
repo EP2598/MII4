@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="Models\VM\" />
     <Folder Include="Repository\Data\" />
-    <Folder Include="Repository\Interface\" />
   </ItemGroup>
 
 

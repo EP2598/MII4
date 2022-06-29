@@ -6,7 +6,10 @@
 
   <ItemGroup>
     <Folder Include="Repositories\Data\" />
-    <Folder Include="Repositories\Interface\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
   </ItemGroup>
 
 </Project>
