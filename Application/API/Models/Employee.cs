@@ -16,6 +16,5 @@ namespace API.Models
         public string EmployeeEmail { get; set; }
         public string TeamLeadId { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
-        public virtual Account Account { get; set; }
     }
 }

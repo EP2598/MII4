@@ -166,25 +166,6 @@ namespace API.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("API.Models.Account", b =>
-                {
-                    b.HasOne("API.Models.Customer", "Customer")
-                        .WithOne("Account")
-                        .HasForeignKey("API.Models.Account", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Models.Employee", "Employee")
-                        .WithOne("Account")
-                        .HasForeignKey("API.Models.Account", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("API.Models.AccountRole", b =>
                 {
                     b.HasOne("API.Models.Account", "Account")
@@ -243,15 +224,11 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Customer", b =>
                 {
-                    b.Navigation("Account");
-
                     b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("API.Models.Employee", b =>
                 {
-                    b.Navigation("Account");
-
                     b.Navigation("Tickets");
                 });
 

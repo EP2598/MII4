@@ -16,6 +16,5 @@ namespace API.Models
         public string CustomerEmail { get; set; }
         public string CustomerPhone { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
-        public virtual Account Account { get; set; }
     }
 }

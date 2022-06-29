@@ -31,14 +31,6 @@ namespace API.Context
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
-            mb.Entity<Employee>()
-                .HasOne(b => b.Account)
-                .WithOne(a => a.Employee)
-                .HasForeignKey<Account>(b => b.Id);
-            mb.Entity<Customer>()
-                .HasOne(b => b.Account)
-                .WithOne(a => a.Customer)
-                .HasForeignKey<Account>(b => b.Id);
 
             mb.Entity<AccountRole>()
                 .HasKey("AccountId", "RoleId");
