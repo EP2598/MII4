@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitProject\\MII4\\Application\\Client\\Client.csproj": {}
+    "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\Client\\Client.csproj": {}
   },
   "projects": {
-    "D:\\GitProject\\MII4\\Application\\Client\\Client.csproj": {
+    "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitProject\\MII4\\Application\\Client\\Client.csproj",
-        "projectName": "Client",
-        "projectPath": "D:\\GitProject\\MII4\\Application\\Client\\Client.csproj",
-        "packagesPath": "C:\\Users\\mooem\\.nuget\\packages\\",
-        "outputPath": "D:\\GitProject\\MII4\\Application\\Client\\obj\\",
+        "projectUniqueName": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\API.csproj",
+        "projectName": "API",
+        "projectPath": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\API.csproj",
+        "packagesPath": "C:\\Users\\Thinkpad T410 i7\\.nuget\\packages\\",
+        "outputPath": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\mooem\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Thinkpad T410 i7\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,6 +31,106 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[5.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.9, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.407\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\Client\\Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\Client\\Client.csproj",
+        "projectName": "Client",
+        "projectPath": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\Client\\Client.csproj",
+        "packagesPath": "C:\\Users\\Thinkpad T410 i7\\.nuget\\packages\\",
+        "outputPath": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\Client\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Thinkpad T410 i7\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\API.csproj": {
+                "projectPath": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\API.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -71,7 +174,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.407\\RuntimeIdentifierGraph.json"
         }
       }
     }

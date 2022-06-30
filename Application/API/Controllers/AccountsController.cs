@@ -28,11 +28,11 @@ namespace API.Controllers
             var result = repository.Register(register);
             if(result < 1)
             {
-                return StatusCode(400, new { status = HttpStatusCode.BadRequest, message = "Registered User Failed!" });
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Registered User Failed!" });
             }
             else
             {
-                return StatusCode(200, new { status = HttpStatusCode.OK, message = "Inserted Data Successed!" });
+                return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Inserted Data Successed!" });
             }
         }
 

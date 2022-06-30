@@ -145,3 +145,4 @@ D:\GitProject\MII4\Application\API\obj\Debug\netcoreapp3.1\API.csproj.CopyComple
 D:\GitProject\MII4\Application\API\obj\Debug\netcoreapp3.1\API.dll
 D:\GitProject\MII4\Application\API\obj\Debug\netcoreapp3.1\API.pdb
 D:\GitProject\MII4\Application\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
+E:\Folder-Meila\MCC\Helpdesk-project\MII4\Application\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -1,3 +1,5 @@
+using Client.Controllers;
+using Client.Repositories.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +31,11 @@ namespace Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<Address>();
+            services.AddScoped<AccountRoleRepository>();
+            services.AddScoped<RoleRepository>();
+            services.AddScoped<AccountRepository>();
+            services.AddSession();
             services.AddHttpContextAccessor();
 
             services.AddAuthentication(auth =>
