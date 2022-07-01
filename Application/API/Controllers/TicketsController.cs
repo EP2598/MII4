@@ -34,6 +34,43 @@ namespace API.Controllers
                 return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Request Ticket Success!", data="" });
             }
         }
+        [HttpPut]
+        [Route("Assign")]
+        public ActionResult AssignTicket(AssignTicketVM ticketVM)
+        {
+            var result = repository.AssignTicket(ticketVM);
+            if (result == -1)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Ticket Not Found!", data = "" });
+            }
+            else if (result < 1)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Assign Ticket Failed!", data = "" });
+            }
+            else
+            {
+                return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Assign Ticket Success!", data = "" });
+            }
+        }
+
+        [HttpPut]
+        [Route("Update")]
+        public ActionResult UpdateTicket(UpdateTicketVM ticketVM)
+        {
+            var result = repository.UpdateTicket(ticketVM);
+            if (result == -1)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Ticket Not Found!", data = "" });
+            }
+            else if (result < 1)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Update Ticket Failed!", data = "" });
+            }
+            else
+            {
+                return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Update Ticket Success!", data = "" });
+            }
+        }
 
         [HttpPost("GetMyTickets")]
         public ActionResult GetMyTickets(TicketOwnerVM request)

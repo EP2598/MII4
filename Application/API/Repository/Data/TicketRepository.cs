@@ -2,6 +2,7 @@
 using API.Models;
 using API.Models.VM;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,39 @@ namespace API.Repository.Data
             };
 
             context.Tickets.Add(ticket);
+            var result = context.SaveChanges();
+            return result;
+        }
+        public int AssignTicket(AssignTicketVM ticketVM)
+        {
+            var ticket = context.Tickets.Find(ticketVM.TicketId);
+            if(ticket == null)
+            {
+                return -1;
+            }
+            if (ticketVM.TeamLeadId != null)
+            {
+                
+                ticket.TeamLeadId = ticketVM.TeamLeadId;
+
+                
+            } else if(ticketVM.EmployeeId != null)
+            {
+                ticket.EmployeeId = ticketVM.EmployeeId;
+            }
+            context.Entry(ticket).State = EntityState.Modified;
+            var result = context.SaveChanges();
+            return result;
+        }
+        public int UpdateTicket(UpdateTicketVM ticketVM)
+        {
+            var ticket = context.Tickets.Find(ticketVM.TicketId);
+            if (ticket == null)
+            {
+                return -1;
+            }
+            ticket.Status = ticketVM.Status;
+            context.Entry(ticket).State = EntityState.Modified;
             var result = context.SaveChanges();
             return result;
         }
