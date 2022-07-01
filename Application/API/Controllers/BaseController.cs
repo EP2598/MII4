@@ -38,7 +38,7 @@ namespace API.Controllers
             var result = repository.Get();
             if (result.Any())
             {
-                return StatusCode(200, new { status = HttpStatusCode.OK, result, message = "Data Found!" });
+                return Ok(result);
             }
             else
             {

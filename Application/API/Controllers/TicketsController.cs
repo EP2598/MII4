@@ -34,5 +34,13 @@ namespace API.Controllers
                 return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Request Ticket Success!", data="" });
             }
         }
+
+        [HttpPost("GetMyTickets")]
+        public ActionResult GetMyTickets(TicketOwnerVM request)
+        {
+            List<TicketViewVM> objResponse = repository.GetTicketsById(request);
+
+            return Ok(objResponse);
+        }
     }
 }

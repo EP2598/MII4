@@ -31,9 +31,16 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.WithOrigins("https://localhost:44365").AllowAnyHeader().AllowAnyMethod());
+            });
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddScoped<AccountRepository>();
+            services.AddScoped<TicketRepository>();
+            services.AddScoped<AccountRolesRepository>();
+            services.AddScoped<RoleRepository>();
 
             services.AddAuthentication(auth =>
             {
@@ -66,7 +73,7 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(options => options.WithOrigins("https://localhost:44365").AllowAnyHeader().AllowAnyMethod());
             app.UseHttpsRedirection();
 
             app.UseRouting();

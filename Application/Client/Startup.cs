@@ -1,3 +1,5 @@
+using Client.Controllers;
+using Client.Repositories.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,8 +30,17 @@ namespace Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddHttpContextAccessor();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); //Idle 
+            });
+
+            services.AddScoped<Address>();
+            services.AddScoped<AccountRoleRepository>();
+            services.AddScoped<RoleRepository>();
+            services.AddScoped<AccountRepository>();
+            services.AddScoped<TicketRepository>();
 
             services.AddAuthentication(auth =>
             {
@@ -108,7 +119,7 @@ namespace Client
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Login}/{action=Index}/{id?}");
             });
         }
     }

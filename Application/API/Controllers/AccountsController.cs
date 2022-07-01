@@ -28,11 +28,11 @@ namespace API.Controllers
             var result = repository.Register(register);
             if(result < 1)
             {
-                return StatusCode(400, new { status = HttpStatusCode.BadRequest, message = "Registered User Failed!" });
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Registered User Failed!" });
             }
             else
             {
-                return StatusCode(200, new { status = HttpStatusCode.OK, message = "Inserted Data Successed!" });
+                return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Inserted Data Successed!" });
             }
         }
 
@@ -40,6 +40,20 @@ namespace API.Controllers
         public ActionResult Auth(LoginVM obj)
         {
             ResponseObj objResp = repository.doAuth(obj);
+            return StatusCode(objResp.statusCode, objResp);
+        }
+
+        [HttpPost("ForgetPassword")]
+        public ActionResult ForgetPassword(ForgetPasswordVM obj)
+        {
+            ResponseObj objResp = repository.ForgetPassword(obj);
+            return StatusCode(objResp.statusCode, objResp);
+        }
+
+        [HttpPost("ChangePassword")]
+        public ActionResult ChangePassword(ChangePasswordVM obj)
+        {
+            ResponseObj objResp = repository.ChangePassword(obj);
             return StatusCode(objResp.statusCode, objResp);
         }
     }

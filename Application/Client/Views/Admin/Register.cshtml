@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Add User";
+    Layout = "LayoutHome";
+}
+
+<div class="container bg-white border-radius-xl p-3">
+    <form id="form-register" novalidate>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="name-register">Name</label>
+                    <input id="name-register" type="text" name="name" class="form-control" placeholder="Enter your name" required />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="email-register">Email</label>
+                    <input id="email-register" type="email" name="email" class="form-control" placeholder="Enter your email" required />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="phone-register">Phone</label>
+                    <input id="phone-register" type="text" name="phone" class="form-control" placeholder="Enter your phone" required />
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="teamleadid-register">Team Lead</label>
+                    <select id="teamleadid-register" name="team-lead-id" class="form-control" required>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="roleid-register">Role</label>
+                    <select id="roleid-register" name="role-id" class="form-control" required>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn bg-gradient-primary" onclick="Register()">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Pages {
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Add User</li>
+        </ol>
+        <h6 class="font-weight-bolder text-white mb-0">Add User</h6>
+    </nav>
+}
+
