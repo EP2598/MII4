@@ -44,13 +44,13 @@ function Register() {
     console.log(obj);
     $.ajax({
         url: "https://localhost:44365/Accounts/Register",
-        type: "POST",
         data: obj,
-        success: function (result) {
-            Swal.fire({
-                title: "User berhasil dibuat",
-                icon: "success"
-            })
-        }
+        type: "post"
+    }).done((res) => {
+        Swal.fire({
+            icon: 'success',
+            title: 'User berhasil dibuat',
+            text: '',
+        })
     })
 }

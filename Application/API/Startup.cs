@@ -41,6 +41,7 @@ namespace API
             services.AddScoped<TicketRepository>();
             services.AddScoped<AccountRolesRepository>();
             services.AddScoped<RoleRepository>();
+            services.AddScoped<CommentRepository>();
 
             services.AddAuthentication(auth =>
             {

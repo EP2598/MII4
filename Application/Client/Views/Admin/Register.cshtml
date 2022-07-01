@@ -46,7 +46,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <button type="submit" class="btn bg-gradient-primary" onclick="Register()">Submit</button>
+                <button type="button" class="btn bg-gradient-primary" onclick="Register()">Submit</button>
             </div>
         </div>
     </form>
@@ -62,3 +62,9 @@
     </nav>
 }
 
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/js/core/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}

@@ -56,5 +56,18 @@ namespace Client.Repositories.Data
             
             return objResp;
         }
+
+        public async Task<TicketViewVM> GetTicketDetails(RequestTicketDetailVM objReq)
+        {
+            TicketViewVM objResp;
+
+            StringContent content = new StringContent(JsonConvert.SerializeObject(objReq), Encoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(request + "GetTicketDetails", content);
+
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            objResp = JsonConvert.DeserializeObject<TicketViewVM>(apiResponse);
+
+            return objResp;
+        }
     }
 }

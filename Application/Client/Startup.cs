@@ -41,6 +41,7 @@ namespace Client
             services.AddScoped<RoleRepository>();
             services.AddScoped<AccountRepository>();
             services.AddScoped<TicketRepository>();
+            services.AddScoped<CommentRepository>();
 
             services.AddAuthentication(auth =>
             {

@@ -10,21 +10,88 @@
                 <div class="numbers">
                     @if (User.IsInRole("Customer") || User.IsInRole("Developer"))
                     {
-                        <p class="text-sm mb-0 text-uppercase font-weight-bold">My Tickets</p>
+                        <p class="text-sm mb-2 text-uppercase font-weight-bold">My Tickets</p>
                     }
                     else
                     {
-                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Assign Ticket</p>
+                        <p class="text-sm mb-2 text-uppercase font-weight-bold">Assign Ticket</p>
                     }
-                    <br />
                     <div id="cardDiv">
 
+                    </div>
+                    <div class="modal fade border-top" id="modalTicket" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalTicketTitle"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div id="modalTicketBody" class="modal-body">
+                                    <div id="divTicketSection">
+                                        <div class="form-row">
+                                            <div class="col-md-4 mb-3">
+                                                <label for="ticket-detail-cname">Requester Name</label>
+                                                <input type="text" class="form-control" id="ticket-detail-cname" readonly>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="ticket-detail-cemail">Requester Email</label>
+                                                <input type="text" class="form-control" id="ticket-detail-cemail" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-4 mb-3">
+                                                <label for="ticket-detail-teamlead">Team Lead</label>
+                                                <input type="text" class="form-control" id="ticket-detail-teamlead" readonly>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="ticket-detail-developer">Handler</label>
+                                                <input type="text" class="form-control" id="ticket-detail-developer" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-4 mb-3">
+                                                <label for="ticket-detail-type">Issue Type</label>
+                                                <input type="text" class="form-control" id="ticket-detail-type" readonly>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="ticket-detail-createddate">Created at</label>
+                                                <input type="text" class="form-control" id="ticket-detail-createddate" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-row border-bottom">
+                                            <div class="col-md-8 mb-3">
+                                                <label for="ticket-detail-description">Description</label>
+                                                <textarea class="form-control" id="ticket-detail-description" rows="5" readonly></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-8 mb-3 mt-2">
+                                                <label for="ticket-detail-inputComment">Comments</label>
+                                                <input type="text" class="form-control" id="ticket-detail-inputComment" placeholder="Add comment to this ticket...">
+                                                <span id="ticketId" style="display:none"></span>
+                                                <button type="button" class="btn btn-primary" onclick="addComment()">Comment</button>
+                                            </div>
+                                        </div>
+                                        <div id="divComments">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" onclick="confirmCancel()">Cancel Ticket</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 @section CSS {
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -34,6 +101,7 @@
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/Ticket.js" asp-append-version="true"></script>
 }

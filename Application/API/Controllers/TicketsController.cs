@@ -42,5 +42,13 @@ namespace API.Controllers
 
             return Ok(objResponse);
         }
+
+        [HttpPost("GetTicketDetails")]
+        public ActionResult GetTicketDetails(RequestTicketDetailVM request)
+        {
+            TicketViewVM objResponse = repository.GetTicketDetails(request);
+
+            return Ok(objResponse);
+        }
     }
 }

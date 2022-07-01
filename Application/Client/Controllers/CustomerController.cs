@@ -48,11 +48,23 @@ namespace Client.Controllers
             return Json(objResp);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> GetTicketDetails(RequestTicketDetailVM objReq)
+        {
+            var objResp = await _ticketRepos.GetTicketDetails(objReq);
+
+            return Json(objResp);
+        }
+
         public IActionResult MyTicket()
         {
             return View();
         }
         public IActionResult RequestTicket()
+        {
+            return View();
+        }
+        public IActionResult TicketDetails()
         {
             return View();
         }
