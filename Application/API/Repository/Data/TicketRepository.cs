@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace API.Repository.Data
@@ -73,6 +74,38 @@ namespace API.Repository.Data
             }
 
             return new_count;
+        }
+
+        public List<TicketViewVM> GetTicketsById(TicketOwnerVM request)
+        {
+            List<TicketViewVM> listTicket = new List<TicketViewVM>();
+            List<Ticket> tickets = (from ticket in context.Tickets
+                                    where (ticket.CustomerId == request.AccountId) || (ticket.EmployeeId == request.AccountId)
+                                    select ticket).ToList();
+
+
+            foreach (var item in tickets)
+            {
+                List<Comment> comments = (from comment in context.Comments
+                                          where comment.TicketId == item.TicketId
+                                          select comment).ToList();
+
+                TicketViewVM ticket = new TicketViewVM();
+                ticket.TicketId = item.TicketId;
+                ticket.CustomerId = item.CustomerId;
+                ticket.TeamLeadId = item.TeamLeadId;
+                ticket.EmployeeId = item.EmployeeId;
+                ticket.TicketType = item.TicketType;
+                ticket.Description = item.Description.Length > 31 ? item.Description.Substring(0,30) + "..." : item.Description;
+                ticket.Status = item.Status;
+                ticket.CreatedAt = item.CreatedAt;
+                ticket.CommentsOrder = comments.Select(x => x.CommentId).ToList();
+                ticket.Comments = comments.Select(x => x.Description).ToList();
+
+                listTicket.Add(ticket);
+            }
+
+            return listTicket;
         }
     }
 }

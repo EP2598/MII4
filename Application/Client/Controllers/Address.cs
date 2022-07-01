@@ -7,6 +7,6 @@ namespace Client.Controllers
 {
     public class Address
     {
-        public string link = "https://localhost:44327/API/";
+        public string link = "https://localhost:44327/api/";
     }
 }

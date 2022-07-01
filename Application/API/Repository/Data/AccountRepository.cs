@@ -180,14 +180,19 @@ namespace API.Repository.Data
                                 select cust).FirstOrDefault();
 
             string id = "";
+            string name = "";
+            string phone = "";
 
             if (empObj != null)
             {
                 id = empObj.EmployeeId;
+                name = empObj.EmployeeName;
             }
             else if (custObj != null)
             {
                 id = custObj.CustomerId;
+                name = custObj.CustomerName;
+                phone = custObj.CustomerPhone;
             }
             else
             {
@@ -219,7 +224,13 @@ namespace API.Repository.Data
                              select c).ToList();
 
                 var claims = new List<Claim>();
+                claims.Add(new Claim("Id", id));
+                claims.Add(new Claim("Name", name));
                 claims.Add(new Claim("Email", obj.Email));
+                if (custObj != null)
+                {
+                    claims.Add(new Claim("Phone", phone));
+                }
 
                 foreach (var roles in listRoles)
                 {
@@ -245,6 +256,122 @@ namespace API.Repository.Data
             }
 
             return objResp;
+        }
+
+        public ResponseObj ForgetPassword(ForgetPasswordVM obj)
+        {
+            ResponseObj objResp = new ResponseObj();
+            EmailService es = new EmailService();
+
+            Employee empObj = (from emp in context.Employees
+                               where emp.EmployeeEmail == obj.Email
+                               select emp).FirstOrDefault();
+
+            Customer custObj = (from cust in context.Customers
+                                where cust.CustomerEmail == obj.Email
+                                select cust).FirstOrDefault();
+
+            string id = "";
+
+            if (empObj != null)
+            {
+                id = empObj.EmployeeId;
+            }
+            else if (custObj != null)
+            {
+                id = custObj.CustomerId;
+            }
+            else
+            {
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+                objResp.message = "Email tidak terdaftar.";
+                objResp.data = null;
+
+                return objResp;
+            }
+
+            string OTP = GenerateOTP();
+
+            Account accObj = (from acc in context.Accounts
+                              where acc.Id == id
+                              select acc).FirstOrDefault();
+
+            accObj.Password = BC.HashPassword(OTP);
+
+            context.SaveChanges();
+
+            es.Send(es.EmailSender, obj.Email, "Request Change Password", "Hello, you recently request to change password. If you're not requesting this, you can ignore this email. Your OTP is " + OTP + " .");
+
+            objResp.statusCode = Convert.ToInt32(HttpStatusCode.OK);
+            objResp.message = "Success Request Change Password";
+            objResp.data = null;
+
+            return objResp;
+        }
+
+        public ResponseObj ChangePassword(ChangePasswordVM obj)
+        {
+            ResponseObj objResp = new ResponseObj();
+
+            Employee empObj = (from emp in context.Employees
+                               where emp.EmployeeEmail == obj.Email
+                               select emp).FirstOrDefault();
+
+            Customer custObj = (from cust in context.Customers
+                                where cust.CustomerEmail == obj.Email
+                                select cust).FirstOrDefault();
+
+            string id = "";
+
+            if (empObj != null)
+            {
+                id = empObj.EmployeeId;
+            }
+            else if (custObj != null)
+            {
+                id = custObj.CustomerId;
+            }
+            else
+            {
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+                objResp.message = "Email tidak terdaftar.";
+                objResp.data = null;
+
+                return objResp;
+            }
+
+            Account accObj = (from acc in context.Accounts
+                              where acc.Id == id
+                              select acc).FirstOrDefault();
+
+            if (!BC.Verify(obj.OTP, accObj.Password))
+            {
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+                objResp.message = "OTP yang dimasukkan salah.";
+                objResp.data = null;
+
+                return objResp;
+            }
+            else if (obj.NewPassword != obj.RetryPassword)
+            {
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+                objResp.message = "Password yang dimasukkan tidak sesuai. Harap ulangi.";
+                objResp.data = null;
+
+                return objResp;
+            }
+            else
+            {
+                accObj.Password = BC.HashPassword(obj.NewPassword);
+
+                context.SaveChanges();
+
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.OK);
+                objResp.message = "Password berhasil diganti.";
+                objResp.data = null;
+
+                return objResp;
+            }
         }
     }
 }

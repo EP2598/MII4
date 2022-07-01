@@ -42,5 +42,19 @@ namespace API.Controllers
             ResponseObj objResp = repository.doAuth(obj);
             return StatusCode(objResp.statusCode, objResp);
         }
+
+        [HttpPost("ForgetPassword")]
+        public ActionResult ForgetPassword(ForgetPasswordVM obj)
+        {
+            ResponseObj objResp = repository.ForgetPassword(obj);
+            return StatusCode(objResp.statusCode, objResp);
+        }
+
+        [HttpPost("ChangePassword")]
+        public ActionResult ChangePassword(ChangePasswordVM obj)
+        {
+            ResponseObj objResp = repository.ChangePassword(obj);
+            return StatusCode(objResp.statusCode, objResp);
+        }
     }
 }
