@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\API.csproj": {}
+    "D:\\GitProject\\MII4\\Application\\API\\API.csproj": {}
   },
   "projects": {
-    "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\API.csproj": {
+    "D:\\GitProject\\MII4\\Application\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\API.csproj",
+        "projectUniqueName": "D:\\GitProject\\MII4\\Application\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\Thinkpad T410 i7\\.nuget\\packages\\",
-        "outputPath": "E:\\Folder-Meila\\MCC\\Helpdesk-project\\MII4\\Application\\API\\obj\\",
+        "projectPath": "D:\\GitProject\\MII4\\Application\\API\\API.csproj",
+        "packagesPath": "C:\\Users\\mooem\\.nuget\\packages\\",
+        "outputPath": "D:\\GitProject\\MII4\\Application\\API\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Thinkpad T410 i7\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\mooem\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -96,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.407\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
         }
       }
     }

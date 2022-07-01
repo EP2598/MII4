@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "HADES";
+    Layout = "LayoutLogin";
+}
+
+<div class="container-fluid ps-md-0">
+    <div class="row g-0">
+        <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+        <div class="col-md-8 col-lg-6">
+            <div class="login d-flex align-items-center py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9 col-lg-8 mx-auto">
+                            <h3 class="login-heading mb-4">Welcome back!</h3>
+
+                            <form id="multiForm" class="needs-validation" novalidate>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+                                    <label for="floatingInput">Email address</label>
+                                    <div class="invalid-feedback">
+                                        This field is required.
+                                    </div>
+                                    <div class="valid-feedback">
+                                    </div>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+                                    <label for="floatingPassword">Password</label>
+                                    <div class="invalid-feedback">
+                                        This field is required.
+                                    </div>
+                                    <div class="valid-feedback">
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="button" onclick="authMe()">Sign in</button>
+                                    <div class="text-center">
+                                        <a class="small" onclick="resetMe()">Forgot password?</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section CSS {
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Login.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+}
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/Login.js" asp-append-version="true"></script>
+}

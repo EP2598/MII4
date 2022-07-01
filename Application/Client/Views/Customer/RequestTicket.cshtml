@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Request Ticket";
+    Layout = "LayoutRequest";
+}
+
+<!-- If Admin, Then show Ticket List -->
+<div class="card">
+    <div class="card-body p-3">
+        <div class="row">
+            <div class="col-8">
+                <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Request Ticket</p>
+                    <form id="formRegisterEmployee" class="needs-validation" onsubmit="return true" novalidate>
+                        <div id="divTicketSection">
+                            <div class="form-row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="inputTicketType">Ticket Type</label>
+                                    <select id="inputTicketType" class="form-control" required>
+                                        <option value="Question" selected>Question</option>
+                                        <option value="Issue">Issue</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please choose Ticket Type.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="inputDescription">Description</label>
+                                    <textarea class="form-control" id="inputDescription" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="button" onclick="doRequest()">Submit Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/Ticket.js" asp-append-version="true"></script>
+}
