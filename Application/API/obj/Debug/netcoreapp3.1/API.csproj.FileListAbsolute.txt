@@ -71,3 +71,4 @@ D:\GitProject\MII4\Application\API\obj\Debug\netcoreapp3.1\API.csproj.CopyComple
 D:\GitProject\MII4\Application\API\obj\Debug\netcoreapp3.1\API.dll
 D:\GitProject\MII4\Application\API\obj\Debug\netcoreapp3.1\API.pdb
 D:\GitProject\MII4\Application\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
+D:\GitProject\MII4\Application\API\obj\Debug\netcoreapp3.1\API.csproj.AssemblyReference.cache

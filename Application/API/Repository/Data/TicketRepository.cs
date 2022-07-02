@@ -79,8 +79,23 @@ namespace API.Repository.Data
         public List<TicketViewVM> GetTicketsById(TicketOwnerVM request)
         {
             List<TicketViewVM> listTicket = new List<TicketViewVM>();
+
+            Employee empobj = (from a in context.Employees
+                               where a.EmployeeId == request.AccountId
+                               select a).FirstOrDefault();
+
+            string adminId = "";
+
+            if (empobj != null)
+            {
+                if (empobj.EmployeeName == "SUPERUSER")
+                {
+                    adminId = empobj.EmployeeName;
+                }
+            }
+
             List<Ticket> tickets = (from ticket in context.Tickets
-                                    where (ticket.CustomerId == request.AccountId) || (ticket.EmployeeId == request.AccountId)
+                                    where (ticket.CustomerId == request.AccountId) || (ticket.EmployeeId == request.AccountId) || (ticket.TeamLeadId == adminId)
                                     select ticket).ToList();
 
 
@@ -135,7 +150,14 @@ namespace API.Repository.Data
                 string commentator = "";
                 if (empObj != null)
                 {
-                    commentator = empObj.EmployeeName;
+                    if (empObj.EmployeeName == "SUPERUSER")
+                    {
+                        commentator = "Admin";
+                    }
+                    else
+                    {
+                        commentator = empObj.EmployeeName;
+                    }
                 }
                 else
                 {
@@ -163,6 +185,7 @@ namespace API.Repository.Data
             response.CreatedAt = ticketObj.CreatedAt;
             response.CommentOrder = listComment.Select(x => x.CommentId).ToList();
             response.CommentSender = Commentators;
+            response.CommentSenderId = listComment.Select(x => x.AccountId).ToList();
             response.CommentBody = listComment.Select(x => x.Description).ToList();
             response.CommentTimestamps = listComment.Select(x => x.CreatedAt).ToList();
             response.CommentIsEdited = listComment.Select(x => x.IsEdited).ToList();

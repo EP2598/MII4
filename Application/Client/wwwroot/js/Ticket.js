@@ -43,11 +43,11 @@
     });
 }
 
-function addComment()
+function addComment(ticketId)
 {
     let objReq =
     {
-        TicketId: document.getElementById("ticketId").innerHTML,
+        TicketId: ticketId,
         AccountId:"",
         Description: $("#ticket-detail-inputComment").val()
     }
@@ -58,6 +58,9 @@ function addComment()
         data: objReq
     }).done((res) => {
         console.log(res);
+        $("#modalTicket").modal("toggle");
+        getDetails(ticketId);
+        $("#modalTicket").modal("toggle");
 
     }).fail((err) => {
         console.log("Add Comment - Error Log");
@@ -137,47 +140,42 @@ function getDetails(ticketId)
         $("#ticket-detail-description").val(res.description);
 
         //Tambah comment
+        let addCommentButton = `<label for="ticket-detail-inputComment">Comments</label>
+                                <input type="text" class="form-control" id="ticket-detail-inputComment" placeholder="Add comment to this ticket...">
+                                <span id="ticketId" style="display:none"></span>
+                                <button type="button" class="btn btn-primary mt-2" onclick='addComment("${res.ticketId}")'>Comment</button>`;
+        let addCommentDiv = document.getElementById("addCommentDiv");
         let commentDiv = document.getElementById("divComments");
         let commentSection = "";
-        for (var i = 0; i < res.commentOrder; i++)
+        for (var i = 0; i < res.commentOrder.length; i++)
         {
-            commentSection += `
+            let commentDate = moment(res.commentTimestamps[i]).format('DD-MM-yyyy HH:mm')
+            if (res.commentIsEdited[i] == false) {
+                commentSection += `
                 <div class="form-row">
                     <div class="col-md-8 mb-3 mt-1">
-                        <label for="ticket-detail-type">${res.commentSender[i]} - ${res.commentTimestamps[i]} (edited)</label>
-                        <input id="commentSection" type="text" class="form-control" readonly="readonly">
+                        <label for="commentSection">${res.commentSender[i]} - ${commentDate}</label>
+                        <br>
+                        <span id="commentSection">${res.commentBody[i]}</span>
                     </div>
                 </div>
-                `;
-            //if (res.commentIsEdited[i] === true) {
-            //    commentSection += `
-            //    <div class="form-row">
-            //        <div class="col-md-8 mb-3 mt-1">
-            //            <label for="ticket-detail-type">${res.commentSender[i]} - ${res.commentTimestamp[i]} (edited)</label>
-            //            <input id="commentSection${i}" type="text" class="form-control" readonly="readonly">
-            //        </div>
-            //    </div>
-            //    `;
-            //}
-            //else
-            //{
-            //    commentSection += `
-            //    <div class="form-row">
-            //        <div class="col-md-8 mb-3 mt-1">
-            //            <label for="ticket-detail-type">${res.commentSender[i]} - ${res.commentTimestamp[i]}</label>
-            //            <input id="commentSection${i}" type="text" class="form-control" readonly="readonly">
-            //        </div>
-                    
-            //    </div>
-            //    `;
-
-                //<div class="col-md-2 mb-3">
-                //    <a onclick="editComment(${i})"><small>Edit</small></a>
-                //    <a onclick="cancelComment(${i})" disabled><small>Cancel</small></a>
-                //</div>
-            /*}*/
+                    `;
+            }
+            else
+            {
+                commentSection += `
+                <div class="form-row">
+                    <div class="col-md-8 mb-3 mt-1">
+                        <label for="commentSection">${res.commentSender[i]} - ${commentDate}</label>
+                        <br>
+                        <span id="commentSection">${res.commentBody[i]}</span>
+                    </div>
+                </div>
+                    `;
+            }
         }
         commentDiv.innerHTML = commentSection;
+        addCommentDiv.innerHTML = addCommentButton;
 
     }).fail((err) => {
         console.log("Ticket Details - Error Log");
@@ -225,3 +223,7 @@ $(document).ready(function () {
         console.log(err);
     });
 });
+
+$('#modalTicket').on('hidden.bs.modal', function (e) {
+    $("#modalTicket").modal("dispose");
+})

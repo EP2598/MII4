@@ -21,6 +21,7 @@ namespace API.Models.VM
         public System.DateTime CreatedAt { get; set; }
         public List<int> CommentOrder { get; set; }
         public List<string> CommentSender { get; set; }
+        public List<string> CommentSenderId { get; set; }
         public List<string> CommentBody { get; set; }
         public List<System.DateTime> CommentTimestamps { get; set; }
         public List<bool> CommentIsEdited { get; set; }
