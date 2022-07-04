@@ -95,7 +95,7 @@ namespace API.Repository.Data
             }
 
             List<Ticket> tickets = (from ticket in context.Tickets
-                                    where (ticket.CustomerId == request.AccountId) || (ticket.EmployeeId == request.AccountId) || (ticket.TeamLeadId == adminId)
+                                    where (ticket.CustomerId == request.AccountId) || (ticket.EmployeeId == request.AccountId) || (ticket.TeamLeadId == adminId) || (ticket.TeamLeadId == request.AccountId)
                                     select ticket).ToList();
 
 
