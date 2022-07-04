@@ -17,5 +17,10 @@ namespace Client.Controllers
             return View();
         }
 
+        public IActionResult Assign()
+        {
+            return View();
+        }
+
     }
 }
