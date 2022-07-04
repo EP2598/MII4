@@ -3,3 +3,5 @@
 ################################################################################
 
 /Application/Client/bin/Debug/netcoreapp3.1/runtimes
+*.v2
+Application/API/.vs/API/v16/.suo
