@@ -50,7 +50,6 @@ namespace API.Controllers
 
             return Ok(objResponse);
         }
-
         [HttpGet("GetAllTickets")]
         public ActionResult GetAllTickets()
         {
@@ -89,3 +88,4 @@ namespace API.Controllers
         }
     }
 }
+

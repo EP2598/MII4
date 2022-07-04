@@ -2,6 +2,7 @@
 using API.Models;
 using API.Models.VM;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -191,6 +192,71 @@ namespace API.Repository.Data
             response.CommentIsEdited = listComment.Select(x => x.IsEdited).ToList();
 
             return response;
+        }
+        public List<TicketViewVM> GetAllTickets()
+        {
+            List<TicketViewVM> listTicket = new List<TicketViewVM>();
+
+            var tickets = context.Tickets.ToList();
+
+            foreach (var item in tickets)
+            {
+                List<Comment> comments = (from comment in context.Comments
+                                          where comment.TicketId == item.TicketId
+                                          select comment).ToList();
+
+                Customer custObj = (from a in context.Customers
+                                    where a.CustomerId == item.CustomerId
+                                    select a).FirstOrDefault();
+
+                TicketViewVM ticket = new TicketViewVM();
+                ticket.TicketId = item.TicketId;
+                ticket.CustomerId = item.CustomerId;
+                ticket.CustomerName = custObj.CustomerName;
+                ticket.CustomerEmail = custObj.CustomerEmail;
+                ticket.TeamLeadId = item.TeamLeadId;
+                ticket.TeamLeadName = (from a in context.Employees where a.EmployeeId == item.TeamLeadId select a.EmployeeName).FirstOrDefault();
+                ticket.EmployeeId = item.EmployeeId;
+                ticket.EmployeeName = (from a in context.Employees where a.EmployeeId == item.EmployeeId select a.EmployeeName).FirstOrDefault();
+                ticket.TicketType = item.TicketType;
+                ticket.Description = item.Description.Length > 31 ? item.Description.Substring(0, 30) + "..." : item.Description;
+                ticket.Status = item.Status;
+                ticket.CreatedAt = item.CreatedAt;
+
+                listTicket.Add(ticket);
+            }
+
+            return listTicket;
+        }
+        public int UpdateTicket(UpdateTicketVM ticketVM)
+        {
+            var ticket = context.Tickets.Find(ticketVM.TicketId);
+            if (ticket == null)
+            {
+                return -1;
+            }
+            ticket.Status = ticketVM.Status;
+            context.Entry(ticket).State = EntityState.Modified;
+            var result = context.SaveChanges();
+            return result;
+        }
+        public int AssignTicket(AssignTicketVM ticketVM)
+        {
+            var ticket = context.Tickets.Find(ticketVM.TicketId);
+            if (ticketVM.TeamLeadId != null)
+            {
+
+                ticket.TeamLeadId = ticketVM.TeamLeadId;
+
+
+            }
+            else if (ticketVM.EmployeeId != null)
+            {
+                ticket.EmployeeId = ticketVM.EmployeeId;
+            }
+            context.Entry(ticket).State = EntityState.Modified;
+            var result = context.SaveChanges();
+            return result;
         }
     }
 }

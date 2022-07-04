@@ -69,5 +69,27 @@ namespace Client.Repositories.Data
 
             return objResp;
         }
+        public async Task<List<TicketViewVM>> GetAllTickets()
+        {
+            List<TicketViewVM> list = new List<TicketViewVM>();
+            using (var response = await httpClient.GetAsync(request + "GetAllTickets/"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                list = JsonConvert.DeserializeObject<List<TicketViewVM>>(apiResponse);
+            }
+            return list;
+        }
+        public HttpStatusCode UpdateTicket(UpdateTicketVM ticketVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(ticketVM), Encoding.UTF8, "application/json");
+            var result = httpClient.PutAsync(request + "Update", content).Result;
+            return result.StatusCode;
+        }
+        public HttpStatusCode AssignTicket(AssignTicketVM ticketVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(ticketVM), Encoding.UTF8, "application/json");
+            var result = httpClient.PutAsync(request + "Assign", content).Result;
+            return result.StatusCode;
+        }
     }
 }
