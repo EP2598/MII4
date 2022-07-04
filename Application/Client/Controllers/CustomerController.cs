@@ -56,6 +56,25 @@ namespace Client.Controllers
             return Json(objResp);
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetAllTickets()
+        {
+            var result = await _ticketRepos.GetAllTickets();
+            return Json(result);
+        }
+        [HttpPut]
+        public JsonResult UpdateTicket(UpdateTicketVM ticketVM)
+        {
+            var result = _ticketRepos.UpdateTicket(ticketVM);
+            return Json(result);
+        }
+
+        [HttpPut]
+        public JsonResult AssignTicket(AssignTicketVM ticketVM)
+        {
+            var result = _ticketRepos.AssignTicket(ticketVM);
+            return Json(result);
+        }
         public IActionResult MyTicket()
         {
             return View();

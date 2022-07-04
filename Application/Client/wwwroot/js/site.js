@@ -28,12 +28,7 @@ $.ajax({
     $("#roleid-register").html(text);
 });
 
-function TestSwal() {
-    Swal.fire({
-        title: "User berhasil dibuat",
-        icon: "success"
-    })
-}
+
 function Register() {
     var obj = new Object();
     obj.Name = $("#name-register").val();
