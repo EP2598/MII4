@@ -28,5 +28,13 @@ namespace Client.Controllers
 
             return Json(objResp);
         }
+
+        [HttpPost]
+        public async Task<JsonResult> EditComment(EditCommentVM objReq)
+        {
+            var objResp = await _commentRepository.EditComment(objReq);
+
+            return Json(objResp);
+        }
     }
 }

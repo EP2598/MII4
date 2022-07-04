@@ -1,6 +1,7 @@
 ﻿using API.Context;
 using API.Models;
 using API.Models.VM;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,17 @@ namespace API.Repository.Data
                 return result;
 
             }
+
+        }
+                public int EditComment(EditCommentVM commentVM)
+        {
+            var comment = context.Comments.Find(commentVM.CommentId);
+            comment.Description = commentVM.Description;
+            comment.IsEdited = true;
+
+            context.Entry(comment).State = EntityState.Modified;
+            var result = context.SaveChanges();
+            return result;
 
         }
     }

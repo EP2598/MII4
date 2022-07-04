@@ -37,5 +37,20 @@ namespace API.Controllers
                 return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Add comment success!", data = "" });
             }
         }
+
+        [HttpPost]
+        [Route("Edit")]
+        public ActionResult EditComment(EditCommentVM commentVM)
+        {
+            var result = repository.EditComment(commentVM);
+            if (result < 1)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Edit Comment Failed!", data = "" });
+            }
+            else
+            {
+                return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Edit Comment Success!", data = "" });
+            }
+        }
     }
 }

@@ -70,8 +70,14 @@ function addComment(ticketId)
 
 function editComment(commentId)
 {
-    let commentSection = "commentSection" + commentId;
-    let comSec = document.getElementById(commentSection);
+    let commentSectionSpan = "commentSectionSpan" + commentId;
+    let comSecSpan = document.getElementById(commentSectionSpan);
+
+    let commentSectionInput = "commentSectionInput" + commentId;
+    let comSecInput = document.getElementById(commentSectionInput);
+
+    let buttonSubmit = "submitEdit" + commentId;
+    let btnSubmit = document.getElementById(buttonSubmit);
 
     let editSection = "editComment" + commentId;
     let editSec = document.getElementById(editSection);
@@ -79,14 +85,22 @@ function editComment(commentId)
     let cancelSection = "cancelComment" + commentId;
     let cancelSec = document.getElementById(cancelSection);
 
-    comSec.readOnly = false;
+    comSecSpan.style.display = "none";
+    comSecInput.style.removeProperty("display");
+    btnSubmit.style.removeProperty("display");
     cancelSec.disabled = false;
     editSec.disabled = true;
 }
 
 function cancelComment(commentId) {
-    let commentSection = "commentSection" + commentId;
-    let comSec = document.getElementById(commentSection);
+    let commentSectionSpan = "commentSectionSpan" + commentId;
+    let comSecSpan = document.getElementById(commentSectionSpan);
+
+    let commentSectionInput = "commentSectionInput" + commentId;
+    let comSecInput = document.getElementById(commentSectionInput);
+
+    let buttonSubmit = "submitEdit" + commentId;
+    let btnSubmit = document.getElementById(buttonSubmit);
 
     let editSection = "editComment" + commentId;
     let editSec = document.getElementById(editSection);
@@ -94,9 +108,31 @@ function cancelComment(commentId) {
     let cancelSection = "cancelComment" + commentId;
     let cancelSec = document.getElementById(cancelSection);
 
-    comSec.readOnly = true;
+    comSecSpan.style.removeProperty("display");
+    comSecInput.style.display = "none";
+    btnSubmit.style.display = "none";
     cancelSec.disabled = true;
     editSec.disabled = false;
+}
+
+function submitEdit(commentId)
+{
+    let commentSectionInput = "commentSectionInput" + commentId;
+    let comSecInput = document.getElementById(commentSectionInput).value;
+
+    let objReq =
+    {
+        CommentId: commentId,
+        Description: comSecInput
+    }
+
+    $.ajax({
+        type: "post",
+        url: "../Comments/EditComment/",
+        data: objReq
+    }).done((res) => {
+        console.log(res);
+    });
 }
 
 function getDetails(ticketId)
@@ -131,7 +167,7 @@ function getDetails(ticketId)
         let ticketId = document.getElementById("ticketId");
         ticketId.innerHTML = res.ticketId;
         
-        $("#ticket-detail-createddate").val(moment(res.createdAt).format('DD-MM-yyyy'));
+        $("#ticket-detail-createddate").val(moment(res.createdAt).format('DD MMMM yyyy HH:mm'));
         $("#ticket-detail-cname").val(res.customerName);
         $("#ticket-detail-cemail").val(res.customerEmail);
         $("#ticket-detail-teamlead").val(res.teamLeadName);
@@ -147,16 +183,22 @@ function getDetails(ticketId)
         let addCommentDiv = document.getElementById("addCommentDiv");
         let commentDiv = document.getElementById("divComments");
         let commentSection = "";
+        let currUserId = document.getElementById("currUserAccountId").innerHTML;
         for (var i = 0; i < res.commentOrder.length; i++)
         {
-            let commentDate = moment(res.commentTimestamps[i]).format('DD-MM-yyyy HH:mm')
+            let commentDate = moment(res.commentTimestamps[i]).format('DD MMMM yyyy HH:mm')
+            //Add Comment Section
             if (res.commentIsEdited[i] == false) {
                 commentSection += `
                 <div class="form-row">
                     <div class="col-md-8 mb-3 mt-1">
                         <label for="commentSection">${res.commentSender[i]} - ${commentDate}</label>
                         <br>
-                        <span id="commentSection">${res.commentBody[i]}</span>
+                        <span id="commentSectionSpan${res.commentOrder[i]}">&emsp;${res.commentBody[i]}</span>
+                        <input id="commentSectionInput${res.commentOrder[i]}" type="text" class="form-control mb-2" value="${res.commentBody[i]}" style="display:none"></input>
+                        <button id="submitEdit${res.commentOrder[i]}" class="btn btn-primary btn-sm" style="display:none" onclick="submitEdit(${res.commentOrder[i]})">Submit</button>
+                    </div>
+                    <div class="col-md-3 mb-3 mt-1" id="editCancel${res.commentOrder[i]}" style="display:none">
                     </div>
                 </div>
                     `;
@@ -166,16 +208,45 @@ function getDetails(ticketId)
                 commentSection += `
                 <div class="form-row">
                     <div class="col-md-8 mb-3 mt-1">
-                        <label for="commentSection">${res.commentSender[i]} - ${commentDate}</label>
+                        <label for="commentSection">${res.commentSender[i]} - ${commentDate} (edited)</label>
                         <br>
-                        <span id="commentSection">${res.commentBody[i]}</span>
+                        <span id="commentSectionSpan${res.commentOrder[i]}">&emsp;${res.commentBody[i]}</span>
+                        <input id="commentSectionInput${res.commentOrder[i]}" type="text" class="form-control mb-2" value="${res.commentBody[i]}" style="display:none"></input>
+                        <button id="submitEdit${res.commentOrder[i]}" class="btn btn-primary btn-sm" style="display:none" onclick="submitEdit(${res.commentOrder[i]})">Submit</button>
+                    </div>
+                    <div class="col-md-3 mb-3 mt-1" id="editCancel${res.commentOrder[i]}" style="display:none">
                     </div>
                 </div>
                     `;
             }
+            //Add Edit Cancel Comment Section
+            
+
         }
         commentDiv.innerHTML = commentSection;
         addCommentDiv.innerHTML = addCommentButton;
+
+        
+
+        for (var i = 0; i < res.commentSenderId.length; i++)
+        {
+            var now = moment();
+            var commentTimestamp = moment(res.commentTimestamps[i]);
+            var dateDiff = now.diff(commentTimestamp, 'days');
+            if (res.commentSenderId[i] === currUserId) {
+                if (dateDiff <= 5) {
+                    let editCancelSection = "editCancel" + res.commentOrder[i];
+                    let thisCommentSection = document.getElementById(editCancelSection);
+                    let innerSection = `
+                            <button id="editComment${res.commentOrder[i]}" class="btn btn-success btn-sm" onclick="editComment(${res.commentOrder[i]})">Edit</button>
+                            <button id="cancelComment${res.commentOrder[i]}" disabled="true" class="btn btn-danger btn-sm" onclick="cancelComment(${res.commentOrder[i]})">Cancel</button>
+`;
+
+                    thisCommentSection.innerHTML = innerSection;
+                    thisCommentSection.style.removeProperty("display");
+                }
+            }
+        }
 
     }).fail((err) => {
         console.log("Ticket Details - Error Log");

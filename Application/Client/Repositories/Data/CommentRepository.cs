@@ -42,5 +42,18 @@ namespace Client.Repositories.Data
 
             return objResp;
         }
+
+        public async Task<ResponseObj> EditComment(EditCommentVM objReq)
+        {
+            ResponseObj objResp = null;
+
+            StringContent content = new StringContent(JsonConvert.SerializeObject(objReq), Encoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(request + "Edit", content);
+
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            objResp = JsonConvert.DeserializeObject<ResponseObj>(apiResponse);
+
+            return objResp;
+        }
     }
 }
