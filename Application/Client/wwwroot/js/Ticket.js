@@ -196,35 +196,41 @@ function getDetails(ticketId)
                     <li class="step0 active text-center" id="step4">Solved</li>
                 `;
                 break;
-            case "Escalated":
-                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">In Progress</span>`;
-                innerProgress = `
-                    <li class="step0 active text-center" id="step1">In Progress</li>
-                    <li class="step0 text-right" id="step2">Assigned to <br> ${res.teamLeadName}</li>
-                    <li class="step0 text-right" id="step3">Handled by <br> ${res.employeeName}</li>
-                    <li class="step0 text-right" id="step4">Solved</li>
-                `;
-                break;
-            case "Escalated TL":
-                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">In Progress</span>`;
-                innerProgress = `
-                    <li class="step0 active" id="step1">In Progress</li>
-                    <li class="step0 active text-center" id="step2">Assigned to <br> ${res.teamLeadName}</li>
-                    <li class="step0 text-right" id="step3">Handled by <br> ${res.employeeName}</li>
-                    <li class="step0 text-right" id="step4">Solved</li>
-                `;
-                break;
-            case "Escalated Dev":
-                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">In Progress</span>`;
-                innerProgress = `
-                    <li class="step0 active" id="step1">In Progress</li>
+            case "Request to Escalate":
+                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">${res.status}</span>`;
+                if (res.employeeName != null) {
+                    innerProgress = `
+                    <li class="step0 active" id="step1">Escalated</li>
                     <li class="step0 active" id="step2">Assigned to <br> ${res.teamLeadName}</li>
                     <li class="step0 active text-center" id="step3">Handled by <br> ${res.employeeName}</li>
                     <li class="step0 text-right" id="step4">Solved</li>
                 `;
+                }
+                else if (res.teamLeadName != null) {
+                    innerProgress = `
+                    <li class="step0 active" id="step1">Escalated</li>
+                    <li class="step0 active text-center" id="step2">Assigned to <br> ${res.teamLeadName}</li>
+                    <li class="step0 text-right" id="step3">Handled by <br> -</li>
+                    <li class="step0 text-right" id="step4">Solved</li>
+                `;
+                }
+                else {
+                    innerProgress = `
+                    <li class="step0 active text-center" id="step1">Escalated</li>
+                    <li class="step0 text-right" id="step2">Assigned to <br> -</li>
+                    <li class="step0 text-right" id="step3">Handled by <br> -</li>
+                    <li class="step0 text-right" id="step4">Solved</li>
+                `;
+                }
                 break;
             default:
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
+                innerProgress = `
+                    <li class="step0 active" id="step1">In Progress</li>
+                    <li class="step0 active" id="step2">&emsp;</li>
+                    <li class="step0 active" id="step3">&emsp;</li>
+                    <li class="step0 active text-center" id="step4">Declined</li>
+                `;
                 break;
         }
         ticketProgress.innerHTML = innerProgress;

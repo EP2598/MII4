@@ -35,8 +35,42 @@ namespace API.Repository.Data
                 CreatedAt = DateTime.Now
             };
 
+            var result = 0;
+
             context.Tickets.Add(ticket);
-            var result = context.SaveChanges();
+            try
+            {
+                result = context.SaveChanges();
+
+                EmailService email = new EmailService();
+
+                #region Send notification to Customer
+                Customer custObj = context.Customers.Find(request.CustomerID);
+                var emailReceiver = custObj.CustomerEmail;
+                var emailSubject = "HalpDesk Support Request";
+                var emailBody = "<p>Dear Mr/Mrs " + custObj.CustomerName + "</p><br><p>Your request for support has been received. Your ticket number is " + ticketID + ". Please wait while" +
+                    " we process this request.</p><br><p>Thank you</p><br><p><small>This email is generated automatically. Please do not reply to this email.</small></p>";
+                email.Send(email.EmailSender, emailReceiver, emailSubject, emailBody);
+                #endregion
+
+                #region Send notification to Admin
+                Employee empObj = (from a in context.Employees
+                                   where a.EmployeeEmail == "admin@email.com" || a.EmployeeEmail == "SUPERUSER@SUPERUSER.USER"
+                                   select a).FirstOrDefault();
+                if (empObj != null)
+                {
+                    emailReceiver = empObj.EmployeeEmail;
+                    emailBody = "<p>Dear Admin</p><br><p>HalpDesk Support has been requested. The ticket number is " + ticketID + ".</p><br><p>Thank you</p>" +
+                        "<br><p><small>This email is generated automatically. Please do not reply to this email.</small></p>";
+                    email.Send(email.EmailSender, emailReceiver, emailSubject, emailBody);
+                } 
+                #endregion
+            }
+            catch 
+            {
+
+            }
+            
             return result;
         }
         private string GenerateID()
@@ -263,6 +297,8 @@ namespace API.Repository.Data
         {
             Ticket ticket = context.Tickets.Find(ticketVM.TicketId);
             ticket.Status = "Request to Escalate";
+            ticket.TeamLeadId = "SUPERUSER";
+            ticket.EmployeeId = null;
 
             context.Entry(ticket).State = EntityState.Modified;
             var result = context.SaveChanges();
