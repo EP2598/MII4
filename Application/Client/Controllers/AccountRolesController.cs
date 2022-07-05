@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.Models.VM;
 using Client.Repositories.Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,6 +21,15 @@ namespace Client.Controllers
         public async Task<JsonResult> GetTeamLead()
         {
             var result = await repository.GetTeamLead();
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GetEmployees(TicketOwnerVM ownerVM)
+        {
+            var userId = User.Claims.Where(x => x.Type.Equals("Id")).FirstOrDefault().Value;
+            ownerVM.AccountId = userId;
+            var result = await repository.GetEmployees(ownerVM);
             return Json(result);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.Models.VM;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,9 +22,23 @@ namespace API.Controllers
 
         [HttpGet("GetTeamLead")]
         public ActionResult GetTeamLead()
+
         {
             var result = repository.GetTeamLead();
             if(result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Registered User Failed!", data = result });
+            }
+        }
+        [HttpPost("GetEmployee")]
+        public ActionResult GetEmployee(TicketOwnerVM ownerVM)
+        {
+            var result = repository.GetEmployee(ownerVM);
+            if (result != null)
             {
                 return Ok(result);
             }

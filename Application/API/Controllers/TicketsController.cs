@@ -79,5 +79,20 @@ namespace API.Controllers
 
             return Ok(objResponse);
         }
+
+        [HttpPost]
+        [Route("Escalate")]
+        public ActionResult EscalateTicket(AssignTicketVM ticketVM)
+        {
+            var result = repository.EscalateTicket(ticketVM);
+            if (result < 1)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Escalate Ticket Failed!", data = "" });
+            }
+            else
+            {
+                return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Escalate Ticket Success!", data = "" });
+            }
+        }
     }
 }
