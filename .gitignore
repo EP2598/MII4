@@ -5,3 +5,10 @@
 /Application/Client/bin/Debug/netcoreapp3.1/runtimes
 *.v2
 Application/API/.vs/API/v16/.suo
+Application/API/.vs/API/v16/.suo
+*.dll
+*.pdb
+*.cache
+Application/Client/obj/Debug/netcoreapp3.1/Client.csproj.FileListAbsolute.txt
+Application/Client/obj/Debug/netcoreapp3.1/Client.GeneratedMSBuildEditorConfig.editorconfig
+Application/Client/obj/Debug/netcoreapp3.1/Client.RazorCoreGenerate.cache

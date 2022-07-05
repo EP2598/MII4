@@ -88,8 +88,10 @@ function editComment(commentId)
     comSecSpan.style.display = "none";
     comSecInput.style.removeProperty("display");
     btnSubmit.style.removeProperty("display");
-    cancelSec.disabled = false;
+    editSec.style.display = "none";
     editSec.disabled = true;
+    cancelSec.style.removeProperty("display");
+    cancelSec.disabled = false;
 }
 
 function cancelComment(commentId) {
@@ -111,7 +113,9 @@ function cancelComment(commentId) {
     comSecSpan.style.removeProperty("display");
     comSecInput.style.display = "none";
     btnSubmit.style.display = "none";
+    cancelSec.style.display = "none";
     cancelSec.disabled = true;
+    editSec.style.removeProperty("display");
     editSec.disabled = false;
 }
 
@@ -151,28 +155,112 @@ function getDetails(ticketId)
 
         //Get Ticket Details
         let modalTitle = document.getElementById("modalTicketTitle");
-        if (res.status === "In Progress")
+        let ticketProgress = document.getElementById("progressbar");
+        let innerProgress = "";
+        switch (res.status)
         {
-            modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">${res.status}</span>`;
+            case "In Progress":
+                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">${res.status}</span>`;
+                if (res.employeeName != null) {
+                    innerProgress = `
+                    <li class="step0 active" id="step1">In Progress</li>
+                    <li class="step0 active" id="step2">Assigned to <br> ${res.teamLeadName}</li>
+                    <li class="step0 active text-center" id="step3">Handled by <br> ${res.employeeName}</li>
+                    <li class="step0 text-right" id="step4">Solved</li>
+                `;
+                }
+                else if (res.teamLeadName != null) {
+                    innerProgress = `
+                    <li class="step0 active" id="step1">In Progress</li>
+                    <li class="step0 active text-center" id="step2">Assigned to <br> ${res.teamLeadName}</li>
+                    <li class="step0 text-right" id="step3">Handled by <br> -</li>
+                    <li class="step0 text-right" id="step4">Solved</li>
+                `;                  
+                }
+                else
+                {
+                    innerProgress = `
+                    <li class="step0 active text-center" id="step1">In Progress</li>
+                    <li class="step0 text-right" id="step2">Assigned to <br> -</li>
+                    <li class="step0 text-right" id="step3">Handled by <br> -</li>
+                    <li class="step0 text-right" id="step4">Solved</li>
+                `;
+                }
+                break;
+            case "Solved":
+                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-success">${res.status}</span>`;
+                innerProgress = `
+                    <li class="step0 active" id="step1">In Progress</li>
+                    <li class="step0 active" id="step2">Assigned to <br> ${res.teamLeadName}</li>
+                    <li class="step0 active" id="step3">Handled by <br> ${res.employeeName}</li>
+                    <li class="step0 active text-center" id="step4">Solved</li>
+                `;
+                break;
+            case "Escalated":
+                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">In Progress</span>`;
+                innerProgress = `
+                    <li class="step0 active text-center" id="step1">In Progress</li>
+                    <li class="step0 text-right" id="step2">Assigned to <br> ${res.teamLeadName}</li>
+                    <li class="step0 text-right" id="step3">Handled by <br> ${res.employeeName}</li>
+                    <li class="step0 text-right" id="step4">Solved</li>
+                `;
+                break;
+            case "Escalated TL":
+                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">In Progress</span>`;
+                innerProgress = `
+                    <li class="step0 active" id="step1">In Progress</li>
+                    <li class="step0 active text-center" id="step2">Assigned to <br> ${res.teamLeadName}</li>
+                    <li class="step0 text-right" id="step3">Handled by <br> ${res.employeeName}</li>
+                    <li class="step0 text-right" id="step4">Solved</li>
+                `;
+                break;
+            case "Escalated Dev":
+                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">In Progress</span>`;
+                innerProgress = `
+                    <li class="step0 active" id="step1">In Progress</li>
+                    <li class="step0 active" id="step2">Assigned to <br> ${res.teamLeadName}</li>
+                    <li class="step0 active text-center" id="step3">Handled by <br> ${res.employeeName}</li>
+                    <li class="step0 text-right" id="step4">Solved</li>
+                `;
+                break;
+            default:
+                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
+                break;
         }
-        else if (res.status === "Solved")
-        {
-            modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-success">${res.status}</span>`;
-        }
-        else
-        {
-            modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
-        }
+        ticketProgress.innerHTML = innerProgress;
+        //if (res.status === "In Progress")
+        //{
+        //    modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">${res.status}</span>`;
+        //}
+        //else if (res.status === "Solved")
+        //{
+        //    modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-success">${res.status}</span>`;
+        //}
+        //else
+        //{
+        //    modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
+        //}
 
         let ticketId = document.getElementById("ticketId");
         ticketId.innerHTML = res.ticketId;
         
-        $("#ticket-detail-createddate").val(moment(res.createdAt).format('DD MMMM yyyy HH:mm'));
-        $("#ticket-detail-cname").val(res.customerName);
-        $("#ticket-detail-cemail").val(res.customerEmail);
-        $("#ticket-detail-teamlead").val(res.teamLeadName);
-        $("#ticket-detail-developer").val(res.employeeName);
-        $("#ticket-detail-type").val(res.ticketType);
+        document.getElementById("ticket-detail-createddate").innerHTML = "&emsp;" + moment(res.createdAt).format('DD MMMM yyyy HH:mm');
+        document.getElementById("ticket-detail-cname").innerHTML = "&emsp;" + res.customerName;
+        document.getElementById("ticket-detail-cemail").innerHTML = "&emsp;" + res.customerEmail;
+        if (res.teamLeadName == null || res.teamLeadName == "") {
+            document.getElementById("ticket-detail-developer").innerHTML = "&emsp;-";
+        }
+        else {
+            document.getElementById("ticket-detail-teamlead").innerHTML = "&emsp;" + res.teamLeadName;
+        }
+        if (res.employeeName == null || res.employeeName == "") {
+            document.getElementById("ticket-detail-developer").innerHTML = "&emsp;-";
+        }
+        else
+        {
+            document.getElementById("ticket-detail-developer").innerHTML = "&emsp;" + res.employeeName;
+        }
+        document.getElementById("ticket-detail-type").innerHTML = "&emsp;" + res.ticketType;
         $("#ticket-detail-description").val(res.description);
 
         //Tambah comment
@@ -191,14 +279,13 @@ function getDetails(ticketId)
             if (res.commentIsEdited[i] == false) {
                 commentSection += `
                 <div class="form-row">
-                    <div class="col-md-8 mb-3 mt-1">
+                    <div class="col-md-8 mb-3 mt-1 border-top">
                         <label for="commentSection">${res.commentSender[i]} - ${commentDate}</label>
+                        <div class="float-right mt-1" id="editCancel${res.commentOrder[i]}" style="display:none"></div>
                         <br>
                         <span id="commentSectionSpan${res.commentOrder[i]}">&emsp;${res.commentBody[i]}</span>
                         <input id="commentSectionInput${res.commentOrder[i]}" type="text" class="form-control mb-2" value="${res.commentBody[i]}" style="display:none"></input>
                         <button id="submitEdit${res.commentOrder[i]}" class="btn btn-primary btn-sm" style="display:none" onclick="submitEdit(${res.commentOrder[i]})">Submit</button>
-                    </div>
-                    <div class="col-md-3 mb-3 mt-1" id="editCancel${res.commentOrder[i]}" style="display:none">
                     </div>
                 </div>
                     `;
@@ -207,14 +294,13 @@ function getDetails(ticketId)
             {
                 commentSection += `
                 <div class="form-row">
-                    <div class="col-md-8 mb-3 mt-1">
+                    <div class="col-md-8 mb-3 mt-1 border-top">
                         <label for="commentSection">${res.commentSender[i]} - ${commentDate} (edited)</label>
+                        <div class="float-right mt-1" id="editCancel${res.commentOrder[i]}" style="display:none"></div>
                         <br>
                         <span id="commentSectionSpan${res.commentOrder[i]}">&emsp;${res.commentBody[i]}</span>
                         <input id="commentSectionInput${res.commentOrder[i]}" type="text" class="form-control mb-2" value="${res.commentBody[i]}" style="display:none"></input>
                         <button id="submitEdit${res.commentOrder[i]}" class="btn btn-primary btn-sm" style="display:none" onclick="submitEdit(${res.commentOrder[i]})">Submit</button>
-                    </div>
-                    <div class="col-md-3 mb-3 mt-1" id="editCancel${res.commentOrder[i]}" style="display:none">
                     </div>
                 </div>
                     `;
@@ -234,12 +320,12 @@ function getDetails(ticketId)
             var commentTimestamp = moment(res.commentTimestamps[i]);
             var dateDiff = now.diff(commentTimestamp, 'days');
             if (res.commentSenderId[i] === currUserId) {
-                if (dateDiff <= 5) {
+                if (dateDiff <= 2) {
                     let editCancelSection = "editCancel" + res.commentOrder[i];
                     let thisCommentSection = document.getElementById(editCancelSection);
                     let innerSection = `
-                            <button id="editComment${res.commentOrder[i]}" class="btn btn-success btn-sm" onclick="editComment(${res.commentOrder[i]})">Edit</button>
-                            <button id="cancelComment${res.commentOrder[i]}" disabled="true" class="btn btn-danger btn-sm" onclick="cancelComment(${res.commentOrder[i]})">Cancel</button>
+                            <button id="editComment${res.commentOrder[i]}" class="btn btn-sm" onclick="editComment(${res.commentOrder[i]})"><i class="fas fa-cog"></i> Edit</button>
+                            <button id="cancelComment${res.commentOrder[i]}" style="display:none" disabled="true" class="btn btn-sm" onclick="cancelComment(${res.commentOrder[i]})"><i class="fas fa-times"></i> Cancel</button>
 `;
 
                     thisCommentSection.innerHTML = innerSection;

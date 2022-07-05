@@ -15,14 +15,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="numbers">
-                    @if (User.IsInRole("Customer") || User.IsInRole("Developer"))
-                    {
-                        <p class="text-sm mb-2 text-uppercase font-weight-bold">My Tickets</p>
-                    }
-                    else
-                    {
-                        <p class="text-sm mb-2 text-uppercase font-weight-bold">Assign Ticket</p>
-                    }
+                    <p class="text-sm mb-2 text-uppercase font-weight-bold">View My Tickets</p>
                     <div id="cardDiv">
 
                     </div>
@@ -37,40 +30,63 @@
                                 </div>
                                 <div id="modalTicketBody" class="modal-body">
                                     <div id="divTicketSection">
-                                        <div class="form-row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="ticket-detail-cname">Requester Name</label>
-                                                <input type="text" class="form-control" id="ticket-detail-cname" readonly>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="ticket-detail-cemail">Requester Email</label>
-                                                <input type="text" class="form-control" id="ticket-detail-cemail" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="ticket-detail-teamlead">Team Lead</label>
-                                                <input type="text" class="form-control" id="ticket-detail-teamlead" readonly>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="ticket-detail-developer">Handler</label>
-                                                <input type="text" class="form-control" id="ticket-detail-developer" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="ticket-detail-type">Issue Type</label>
-                                                <input type="text" class="form-control" id="ticket-detail-type" readonly>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="ticket-detail-createddate">Created at</label>
-                                                <input type="text" class="form-control" id="ticket-detail-createddate" readonly>
-                                            </div>
-                                        </div>
                                         <div class="form-row border-bottom">
-                                            <div class="col-md-8 mb-3">
-                                                <label for="ticket-detail-description">Description</label>
-                                                <textarea class="form-control" id="ticket-detail-description" rows="5" readonly></textarea>
+                                            <!-- Ticket Details -->
+                                            <div class="col-md-7 mb-2">
+                                                <div class="form-row">
+                                                    <div class="col-md-4 mb-2">
+                                                        <label for="ticket-detail-cname">Requester Name</label>
+                                                        <br />
+                                                        <span id="ticket-detail-cname" class="mt-1"></span>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label for="ticket-detail-cemail">Requester Email</label>
+                                                        <br />
+                                                        <span id="ticket-detail-cemail" class="mt-1"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-md-4 mb-2">
+                                                        <label for="ticket-detail-teamlead">Team Lead</label>
+                                                        <br />
+                                                        <span id="ticket-detail-teamlead" class="mt-1"></span>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label for="ticket-detail-developer">Handler</label>
+                                                        <br />
+                                                        <span id="ticket-detail-developer" class="mt-1"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-md-4 mb-2">
+                                                        <label for="ticket-detail-type">Issue Type</label>
+                                                        <br />
+                                                        <span id="ticket-detail-type" class="mt-1"></span>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label for="ticket-detail-createddate">Created at</label>
+                                                        <br />
+                                                        <span id="ticket-detail-createddate" class="mt-1"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <label for="ticket-detail-description">Description</label>
+                                                    <textarea class="form-control" id="ticket-detail-description" rows="5" readonly></textarea>
+                                                </div>
+                                            </div>
+                                            <!-- Progress Bar -->
+                                            <div class="col-md-5 mb-2">
+                                                <div class="form-row">
+                                                    <div class="col-md-5 mb-2">
+                                                        <span>Ticket Progress</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div id="progresstrack">
+                                                        <ul id="progressbar">
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-row">
