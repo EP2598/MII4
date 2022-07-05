@@ -2,6 +2,7 @@
     url: "../Customer/GetAllTickets",
     type: "get"
 }).done((res) => {
+    console.log(res);
     let text = '';
     $.each(res, function (key, value) {
         let teamLeadexist = true;
