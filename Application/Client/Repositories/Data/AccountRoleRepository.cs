@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.Models.VM;
 using Client.Controllers;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Client.Repositories.Data
@@ -37,6 +39,19 @@ namespace Client.Repositories.Data
                 list = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
             }
             return list;
+        }
+
+        public async Task<List<Employee>> GetEmployees(TicketOwnerVM ownerVM)
+        {
+            List<Employee> objResp;
+
+            StringContent content = new StringContent(JsonConvert.SerializeObject(ownerVM), Encoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(request + "GetEmployee", content);
+
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            objResp = JsonConvert.DeserializeObject<List<Employee>>(apiResponse);
+
+            return objResp;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using API.Context;
+﻿using API.Base;
+using API.Context;
 using API.Models;
 using API.Models.VM;
 using Microsoft.AspNetCore.Mvc;
@@ -256,6 +257,21 @@ namespace API.Repository.Data
             }
             context.Entry(ticket).State = EntityState.Modified;
             var result = context.SaveChanges();
+            return result;
+        }
+        public int EscalateTicket(AssignTicketVM ticketVM)
+        {
+            Ticket ticket = context.Tickets.Find(ticketVM.TicketId);
+            ticket.Status = "Request to Escalate";
+
+            context.Entry(ticket).State = EntityState.Modified;
+            var result = context.SaveChanges();
+
+            Employee employee = context.Employees.Find(ticketVM.TeamLeadId);
+            EmailService email = new EmailService();
+            var emailBody = employee.EmployeeName + " make a request to escalate ticket with id: " + ticketVM.TicketId;
+            email.Send(email.EmailSender, "admin@email.com", "[Request Escalate Ticket " + ticketVM.TicketId + "]", emailBody);
+
             return result;
         }
     }

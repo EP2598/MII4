@@ -75,6 +75,7 @@ namespace Client.Controllers
             var result = _ticketRepos.AssignTicket(ticketVM);
             return Json(result);
         }
+
         public IActionResult MyTicket()
         {
             return View();

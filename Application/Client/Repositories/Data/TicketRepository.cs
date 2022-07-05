@@ -91,5 +91,18 @@ namespace Client.Repositories.Data
             var result = httpClient.PutAsync(request + "Assign", content).Result;
             return result.StatusCode;
         }
+
+        public async Task<ResponseObj> Escalate(AssignTicketVM ticketVM)
+        {
+            ResponseObj objResp = null;
+
+            StringContent content = new StringContent(JsonConvert.SerializeObject(ticketVM), Encoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(request + "Escalate", content);
+
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            objResp = JsonConvert.DeserializeObject<ResponseObj>(apiResponse);
+
+            return objResp;
+        }
     }
 }

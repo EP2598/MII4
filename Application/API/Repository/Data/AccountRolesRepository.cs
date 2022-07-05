@@ -1,5 +1,6 @@
 ﻿using API.Context;
 using API.Models;
+using API.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,14 @@ namespace API.Repository.Data
                           join e in context.Employees
                           on ar.AccountId equals e.EmployeeId
                           where ar.RoleId == 2
+                          select e).ToList<Employee>();
+            return result;
+        }
+
+        public List<Employee> GetEmployee(TicketOwnerVM ownerVM)
+        {
+            var result = (from e in context.Employees
+                          where e.TeamLeadId == ownerVM.AccountId
                           select e).ToList<Employee>();
             return result;
         }

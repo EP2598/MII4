@@ -1,17 +1,18 @@
-﻿$.ajax({
-    url: "../Customer/GetAllTickets",
-    type: "get"
+﻿let objReq =
+{
+    AccountId: ""
+}
+$.ajax({
+    url: "../Customer/GetMyTickets",
+    type: "post",
+    data: objReq
 }).done((res) => {
-    console.log(res);
     let text = '';
     $.each(res, function (key, value) {
-        let teamLeadexist = true;
-        if (value.teamLeadName == null) {
-            value.teamLeadName = "-";
-            teamLeadexist = false;
-        }
+        let employeeExist = true;
         if (value.employeeName == null) {
             value.employeeName = "-";
+            employeeExist = false;
         }
         text += `<tr>
                     <td>${value.ticketId}</td>
@@ -29,27 +30,32 @@
                     <option value="Solved" selected>Solved</option>
                     <option value="Declined">Declined</option>`
         } else if (value.status == "Request to Escalate") {
-            text += `<option value="In Progress">In Progress</option>
-                    <option value="Request to Escalate" selected>Request to Escalate</option>
+            text += `<option value="Request to Escalate" selected>Request to Escalate</option>
+                    <option value="In Progress">In Progress</option>
                     <option value="Solved">Solved</option>
-                    <option value="Declined">Declined</option>`
-        }
-        else {
+                    <option value="Declined">Declined</option>`;
+        }else {
             text += `<option value="In Progress">In Progress</option>
                     <option value="Solved">Solved</option>
                     <option value="Declined" selected>Declined</option>`
         }
         text += `</td>
                     <td>${moment(value.createdAt).format('DD-MM-yyyy')}</td>`;
-        if (!teamLeadexist) {
-            text += `<td><button type="button" onclick="AssignModel('${value.ticketId}')" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#assignModal">Assign Team Lead</button></td>
-                    </tr>`;
-        } else {
-            text += `<td><button type="button" onclick="AssignModel('${value.ticketId}')" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#assignModal">Change Team Lead</button></td>
-                    </tr>`
+        if (!employeeExist) {
+            text += `<td><span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Assign Employee" ><button type="button" onclick="AssignModel('${value.ticketId}')" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#assignModal"><i class="fa-solid fa-person-circle-plus"></i></button></span></td>
+                `;
         }
+
+        text += `<td><span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Escalate Ticket" ><button type="button" onclick="RequestEscalate('${value.ticketId}')" class="btn btn-info btn-sm"><i class="fa-solid fa-people-arrows-left-right"></i></button></span></td>
+                </tr>`;
+
     })
     $("#ticket-table-admin").html(text);
+    $.each(res, function (key, value) {
+        if (value.status == "Request to Escalate") {
+            $(`#${value.ticketId}`).attr('disabled', 'disabled');
+        }
+    })
 });
 
 $(document).ready(function () {
@@ -65,7 +71,6 @@ $(document).ready(function () {
             type: "put",
             data: obj
         }).done((res) => {
-            console.log(res);
             switch (res) {
                 case 200:
                     Swal.fire({
@@ -84,29 +89,33 @@ $(document).ready(function () {
     })
 })
 
-
 function AssignModel(ticketId) {
     console.log(ticketId);
+    let objReq =
+    {
+        AccountId: ""
+    }
     $.ajax({
-        url: "../AccountRoles/GetTeamLead",
-        type: "GET"
+        url: "../AccountRoles/GetEmployees",
+        type: "POST",
+        data: objReq
     }).done((res) => {
         console.log(res);
         let text = '';
         $("#ticketid-assign").html(ticketId);
         $.each(res, (key, value) => {
             text += `<div class="form-check">
-                      <input type="radio" value="${value.employeeId}" name="teamLead" id="teamLead${key + 1}" class="teamlead-opt">
-                      <label for="teamLead${key + 1}">${value.employeeName}</label>
+                      <input type="radio" value="${value.employeeId}" name="employee" id="employee${key + 1}" class="employee-opt">
+                      <label for="employee${key + 1}">${value.employeeName}</label>
                     </div>`
         });
         $(".modal-body").html(text);
     })
 }
-function AssignLead() {
+function AssignEmployee() {
     var obj = {
         TicketId: $("#ticketid-assign").html(),
-        TeamLeadId: $("input[name='teamLead']:checked").val()
+        EmployeeId: $("input[name='employee']:checked").val()
     };
     console.log(obj);
 
@@ -119,16 +128,44 @@ function AssignLead() {
             case 200:
                 Swal.fire({
                     icon: 'success',
-                    title: 'Assign Team Lead berhasil dilakukan!',
+                    title: 'Assign Employee berhasil dilakukan!',
                 });
                 break;
             default:
                 Swal.fire({
                     icon: 'error',
-                    title: 'Assign Team Lead gagal dilakukan!',
+                    title: 'Assign Employee gagal dilakukan!',
                 });
                 break;
         }
     })
 
+}
+
+function RequestEscalate(ticketId) {
+    var obj = {
+        TicketId: ticketId,
+        TeamLeadId: ""
+    };
+    $.ajax({
+        url: "../TeamLead/EscalateTicket",
+        type: "POST",
+        data: obj
+    }).done((res) => {
+        console.log(res);
+        switch (res.statusCode) {
+            case 200:
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Request escalate berhasil dilakukan!',
+                });
+                break;
+            default:
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Request escalate gagal dilakukan!',
+                });
+                break;
+        }
+    })
 }
