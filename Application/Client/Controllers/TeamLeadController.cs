@@ -26,7 +26,6 @@ namespace Client.Controllers
   
             return Json(objResp);
         }
-
         public IActionResult Index()
         {
             return View();

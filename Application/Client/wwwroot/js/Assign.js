@@ -17,9 +17,20 @@
                     <td>${value.ticketId}</td>
                     <td>${value.customerName}</td>
                     <td>${value.teamLeadName}</td>
-                    <td>${value.employeeName}</td>
-                    <td>${value.ticketType}</td>
-                    <td><select class="form-control ticket-type" id="${value.ticketId}">`
+                    <td>${value.employeeName}</td>`
+        if (value.ticketType == 'Other') {
+            text += `<td>
+                        <select class="form-control ticket-type-${value.ticketId}" id="${value.ticketId}">
+                            <option selected>Other</option>
+                            <option value="Administration">Administration</option>
+                            <option value="IT Support">IT Support</option>
+                        </select>
+                      </td>
+                     `;
+        } else {
+            text += `<td>${value.ticketType}</td>`;
+        }
+        text += `<td><select class="form-control ticket-status-${value.ticketId}" id="${value.ticketId}">`
         if (value.status == "In Progress") {
             text += `<option value="In Progress" selected>In Progress</option>
                     <option value="Solved">Solved</option>
@@ -53,33 +64,69 @@
 });
 
 $(document).ready(function () {
-    $(`.ticket-type`).change(function (e) {
-        var elem = $(this);
-        var obj = {
-            TicketId: elem.attr('id'),
-            Status: e.target.value
-        };
-        console.log(obj);
-        $.ajax({
-            url: "../Customer/UpdateTicket",
-            type: "put",
-            data: obj
-        }).done((res) => {
-            console.log(res);
-            switch (res) {
-                case 200:
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Update status berhasil dilakukan!',
-                    });
-                    break;
-                default:
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Update status gagal dilakukan!',
-                    });
-                    break;
-            }
+    $.ajax({
+        url: "../Customer/GetAllTickets",
+        type: "GET"
+    }).done((res) => {
+        $.each(res, function (key, value) {
+            $(`.ticket-status-${value.ticketId}`).change(function (e) {
+                var elem = $(this);
+                var obj = {
+                    TicketId: elem.attr('id'),
+                    Status: e.target.value
+                };
+                console.log(obj);
+                $.ajax({
+                    url: "../Customer/UpdateTicket",
+                    type: "put",
+                    data: obj
+                }).done((res) => {
+                    console.log(res);
+                    switch (res) {
+                        case 200:
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Update status berhasil dilakukan!',
+                            });
+                            break;
+                        default:
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Update status gagal dilakukan!',
+                            });
+                            break;
+                    }
+                })
+            });
+            $(`.ticket-type-${value.ticketId}`).change(function (e) {
+                var elem = $(this);
+                var obj = {
+                    TicketId: elem.attr('id'),
+                    Type: e.target.value
+                };
+                console.log(obj);
+                $.ajax({
+                    url: "../Admin/UpdateTypeTicket",
+                    type: "POST",
+                    data: obj
+                }).done((res) => {
+                    console.log(res);
+                    switch (res.statusCode) {
+                        case 200:
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Update tipe tiket berhasil dilakukan!',
+                            });
+                            break;
+                        default:
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Update tipe tiket gagal dilakukan!',
+                            });
+                            break;
+                    }
+                })
+            })
         })
     })
 })

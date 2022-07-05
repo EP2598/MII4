@@ -103,5 +103,19 @@ namespace API.Controllers
                 return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Escalate Ticket Success!", data = "" });
             }
         }
+
+        [HttpPost("UpdateType")]
+        public ActionResult UpdateTypeTicket(UpdateTypeVM ticketVM)
+        {
+            var result = repository.UpdateTypeTicket(ticketVM);
+            if (result < 1)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Update Type Ticket Failed!", data = "" });
+            }
+            else
+            {
+                return StatusCode(200, new { statusCode = HttpStatusCode.OK, message = "Update Type Ticket Success!", data = "" });
+            }
+        }
     }
 }

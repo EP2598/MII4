@@ -310,5 +310,15 @@ namespace API.Repository.Data
 
             return result;
         }
+
+        public int UpdateTypeTicket(UpdateTypeVM ticketVM)
+        {
+            Ticket ticket = context.Tickets.Find(ticketVM.TicketId);
+            ticket.TicketType = ticketVM.Type;
+
+            context.Entry(ticket).State = EntityState.Modified;
+            var result = context.SaveChanges();
+            return result;
+        }
     }
 }
