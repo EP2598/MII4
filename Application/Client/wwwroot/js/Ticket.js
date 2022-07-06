@@ -158,7 +158,7 @@ function getDetails(ticketId)
 
         //Get Ticket Details
         let modalTitle = document.getElementById("modalTicketTitle");
-        let ticketProgress = document.getElementById("progressbar");
+        let ticketProgress = document.getElementById("StepProgress");
         let innerProgress = "";
         let cancelTicketBtn = document.getElementById("cancelTicketBtn");
         cancelTicketBtn.style.removeProperty("display");
@@ -168,27 +168,27 @@ function getDetails(ticketId)
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">${res.status}</span>`;
                 if (res.employeeName != null) {
                     innerProgress = `
-                    <li class="step0 active" id="step1">In Progress</li>
-                    <li class="step0 active" id="step2">Assigned to <br> ${res.teamLeadName}</li>
-                    <li class="step0 active text-center" id="step3">Handled by <br> ${res.employeeName}</li>
-                    <li class="step0 text-right" id="step4">Solved</li>
+                    <li><time class="done"></time><span><strong>In Progress</strong></span></li>
+                    <li><time class="done"></time><span><strong>Assigned to </strong> ${res.teamLeadName}</span></li>
+                    <li><time class="current"></time><span><strong>Handled by </strong> ${res.employeeName}</span></li>
+                    <li><time class="incomplete"></time><span><strong>Solved</strong></span></li>
                 `;
                 }
                 else if (res.teamLeadName != null) {
                     innerProgress = `
-                    <li class="step0 active" id="step1">In Progress</li>
-                    <li class="step0 active text-center" id="step2">Assigned to <br> ${res.teamLeadName}</li>
-                    <li class="step0 text-right" id="step3">Handled by <br> -</li>
-                    <li class="step0 text-right" id="step4">Solved</li>
+                    <li><time class="done"></time><span><strong>In Progress</strong></span></li>
+                    <li><time class="current"></time><span><strong>Assigned to </strong> ${res.teamLeadName}</span></li>
+                    <li><time class="incomplete"></time><span><strong>Handled by </strong> -</span></li>
+                    <li><time class="incomplete"></time><span><strong>Solved</strong></span></li>
                 `;                  
                 }
                 else
                 {
                     innerProgress = `
-                    <li class="step0 active text-center" id="step1">In Progress</li>
-                    <li class="step0 text-right" id="step2">Assigned to <br> -</li>
-                    <li class="step0 text-right" id="step3">Handled by <br> -</li>
-                    <li class="step0 text-right" id="step4">Solved</li>
+                    <li><time class="current"></time><span><strong>In Progress</strong></span></li>
+                    <li><time class="incomplete"></time><span><strong>Assigned to </strong> -</span></li>
+                    <li><time class="incomplete"></time><span><strong>Handled by </strong> -</span></li>
+                    <li><time class="incomplete"></time><span><strong>Solved</strong></span></li>
                 `;
                 }
                 break;
@@ -196,36 +196,36 @@ function getDetails(ticketId)
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-success">${res.status}</span>`;
                 cancelTicketBtn.style.display = "none";
                 innerProgress = `
-                    <li class="step0 active" id="step1">In Progress</li>
-                    <li class="step0 active" id="step2">Assigned to <br> ${res.teamLeadName}</li>
-                    <li class="step0 active" id="step3">Handled by <br> ${res.employeeName}</li>
-                    <li class="step0 active text-center" id="step4">Solved</li>
+                    <li><time class="done"></time><span><strong>In Progress</strong></span></li>
+                    <li><time class="done"></time><span><strong>Assigned to </strong> ${res.teamLeadName}</span></li>
+                    <li><time class="done"></time><span><strong>Handled by </strong> ${res.employeeName}</span></li>
+                    <li><time class="done"></time><span><strong>Solved</strong></span></li>
                 `;
                 break;
             case "Request to Escalate":
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">${res.status}</span>`;
                 if (res.employeeName != null) {
                     innerProgress = `
-                    <li class="step0 active" id="step1">Escalated</li>
-                    <li class="step0 active" id="step2">Assigned to <br> ${res.teamLeadName}</li>
-                    <li class="step0 active text-center" id="step3">Handled by <br> ${res.employeeName}</li>
-                    <li class="step0 text-right" id="step4">Solved</li>
+                    <li><time class="done"></time><span><strong>Escalated</strong></span></li>
+                    <li><time class="done"></time><span><strong>Assigned to </strong> ${res.teamLeadName}</span></li>
+                    <li><time class="current"></time><span><strong>Handled by </strong> ${res.employeeName}</span></li>
+                    <li><time class="incomplete"></time><span><strong>Solved</strong></span></li>
                 `;
                 }
                 else if (res.teamLeadName != null) {
                     innerProgress = `
-                    <li class="step0 active" id="step1">Escalated</li>
-                    <li class="step0 active text-center" id="step2">Assigned to <br> ${res.teamLeadName}</li>
-                    <li class="step0 text-right" id="step3">Handled by <br> -</li>
-                    <li class="step0 text-right" id="step4">Solved</li>
+                    <li><time class="done"></time><span><strong>Escalated</strong></span></li>
+                    <li><time class="current"></time><span><strong>Assigned to </strong> ${res.teamLeadName}</span></li>
+                    <li><time class="incomplete"></time><span><strong>Handled by </strong> -</span></li>
+                    <li><time class="incomplete"></time><span><strong>Solved</strong></span></li>
                 `;
                 }
                 else {
                     innerProgress = `
-                    <li class="step0 active text-center" id="step1">Escalated</li>
-                    <li class="step0 text-right" id="step2">Assigned to <br> -</li>
-                    <li class="step0 text-right" id="step3">Handled by <br> -</li>
-                    <li class="step0 text-right" id="step4">Solved</li>
+                    <li><time class="current"></time><span><strong>Escalated</strong></span></li>
+                    <li><time class="incomplete"></time><span><strong>Assigned to </strong> - </span></li>
+                    <li><time class="incomplete"></time><span><strong>Handled by </strong> - </span></li>
+                    <li><time class="incomplete"></time><span><strong>Solved</strong></span></li>
                 `;
                 }
                 break;
@@ -233,10 +233,10 @@ function getDetails(ticketId)
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
                 cancelTicketBtn.style.display = "none";
                 innerProgress = `
-                    <li class="step0 active" id="step1">In Progress</li>
-                    <li class="step0 active" id="step2">&emsp;</li>
-                    <li class="step0 active" id="step3">&emsp;</li>
-                    <li class="step0 active text-center" id="step4">Declined</li>
+                    <li><time class="done"></time><span><strong>In Progress</strong></span></li>
+                    <li><time class="done"></time><span>&emsp;</span></li>
+                    <li><time class="done"></time><span>&emsp;</span></li>
+                    <li><time class="done"></time><span><strong>Declined</strong></span></li>
                 `;
                 break;
         }
@@ -261,7 +261,7 @@ function getDetails(ticketId)
         document.getElementById("ticket-detail-cname").innerHTML = "&emsp;" + res.customerName;
         document.getElementById("ticket-detail-cemail").innerHTML = "&emsp;" + res.customerEmail;
         if (res.teamLeadName == null || res.teamLeadName == "") {
-            document.getElementById("ticket-detail-developer").innerHTML = "&emsp;-";
+            document.getElementById("ticket-detail-teamlead").innerHTML = "&emsp;-";
         }
         else {
             document.getElementById("ticket-detail-teamlead").innerHTML = "&emsp;" + res.teamLeadName;
