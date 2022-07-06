@@ -79,6 +79,17 @@ namespace Client.Repositories.Data
             }
             return list;
         }
+
+        public async Task<ResponseObj> GetSystemStatistic()
+        {
+            ResponseObj obj = new ResponseObj();
+            using (var response = await httpClient.GetAsync(request + "GetSystemStatistic/"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                obj = JsonConvert.DeserializeObject<ResponseObj>(apiResponse);
+            }
+            return obj;
+        }
         public HttpStatusCode UpdateTicket(UpdateTicketVM ticketVM)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(ticketVM), Encoding.UTF8, "application/json");

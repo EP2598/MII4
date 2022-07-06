@@ -11,128 +11,56 @@
                 <div class="numbers">
                     @if (User.IsInRole("Admin"))
                     {
-                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Assign Ticket</p>
+                        <p class="text-sm mb-0 text-uppercase font-weight-bold">System Statistic</p>
                     }
                     else
                     {
-                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Request Ticket</p>
+                        <p class="text-sm mb-0 text-uppercase font-weight-bold">My Statistic</p>
                     }
-                    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalTitle">Insert New Employee</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div id="modalFormBody" class="modal-body">
-                                    <form id="formRegisterEmployee" class="needs-validation" onsubmit="return true" novalidate>
-                                        <h3 id="headerEmployeeSection" data-toggle="collapse" data-target="#divEmployeeSection" aria-expanded="true"> [-] Employee Data</h3>
-                                        <div id="divEmployeeSection">
-                                            <div class="form-row">
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="validationCustom01">First name</label>
-                                                    <input type="text" class="form-control" id="validationCustom01" placeholder="Mark" required>
-                                                    <div class="valid-feedback">
-                                                        Looks good!
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="validationCustom02">Last name</label>
-                                                    <input type="text" class="form-control" id="validationCustom02" placeholder="Otto" required>
-                                                    <div class="valid-feedback">
-                                                        Looks good!
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="validationCustomUsername">Email</label>
-                                                    <input type="text" class="form-control" id="validationCustomEmail" placeholder="someone@domain.com" required>
-                                                    <div class="invalid-feedback">
-                                                        Please provide an Email.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row border-bottom">
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="validationCustom03">Phone Number</label>
-                                                    <input type="text" class="form-control" id="validationCustom03" placeholder="0858141233423" required>
-                                                    <div class="invalid-feedback">
-                                                        Please provide a phone number.
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="validationCustom04">Birth Date</label>
-                                                    <input type="date" class="form-control" id="validationCustom04" required>
-                                                    <div class="invalid-feedback">
-                                                        Please choose a valid date.
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 mb-3">
-                                                    <label for="inputGender">Gender</label>
-                                                    <select id="inputGender" class="form-control" required>
-                                                        <option value="Male" selected>Male</option>
-                                                        <option value="Female">Female</option>
-                                                    </select>
-                                                    <div class="invalid-feedback">
-                                                        Please choose a Gender.
-                                                    </div>
-                                                    <div class="valid-feedback">
-                                                        Looks good!
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <h3 id="headerEducationSection" data-toggle="collapse" data-target="#divEducationSection" aria-expanded="false"> [-] Education Data</h3>
-                                        <div id="divEducationSection">
-                                            <div id="divInnerEducation" class="form-education form-row mt-2">
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="inputUniversity">University</label>
-                                                    <select id="inputUniversity" class="form-control" required>
-                                                        <option value="1" selected>Universitas Pokemon</option>
-                                                        <option value="2">GachArena</option>
-                                                        <option value="3">Poke Institute</option>
-                                                    </select>
-                                                    <div class="invalid-feedback">
-                                                        Please choose a University.
-                                                    </div>
-                                                    <div class="valid-feedback">
-                                                        Looks good!
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 mb-3">
-                                                    <label for="inputDegree">Degree</label>
-                                                    <select id="inputDegree" class="form-control" required>
-                                                        <option value="1" selected>D3</option>
-                                                        <option value="2">D4</option>
-                                                        <option value="3">S1</option>
-                                                        <option value="4">S2</option>
-                                                        <option value="5">S3</option>
-                                                    </select>
-                                                    <div class="invalid-feedback">
-                                                        Please choose a Degree.
-                                                    </div>
-                                                    <div class="valid-feedback">
-                                                        Looks good!
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 mb-3">
-                                                    <label for="validationCustom05">GPA</label>
-                                                    <input type="text" class="form-control" id="validationCustom05" placeholder="3.80" required>
-                                                    <div class="valid-feedback">
-                                                        Looks good!
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-primary" type="button" onclick="registerEmployee()">Submit form</button>
-                                    </form>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="form-row mt-1">
+                            <div class="col-md-8 mb-3">
+                                <div id="cardTotalTickets" class="card mb-1">
+                                    <div class="card-header" data-toggle="collapse" data-target="#innerDetailTickets" aria-expanded="false">
+                                        Total Ticket on System
+                                    </div>
+                                    <div id="innerDetailTickets" class="card-body">
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="form-row">
+                            <div class="col-md-8 mb-3">
+                                <div id="cardTotalTickets" class="card mb-2">
+                                    <div class="card-header" data-toggle="collapse" data-target="#innerSelfDetail" aria-expanded="false">
+                                        Tickets Status
+                                    </div>
+                                    <div id="innerSelfDetail" class="card-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section CSS {
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+}
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="~/js/Home.js"></script>
+}

@@ -45,6 +45,8 @@
 
 function addComment(ticketId)
 {
+    let addCommentBtn = document.getElementById("addCommentBtn");
+    addCommentBtn.disabled = true;
     let objReq =
     {
         TicketId: ticketId,
@@ -61,6 +63,7 @@ function addComment(ticketId)
         $("#modalTicket").modal("toggle");
         getDetails(ticketId);
         $("#modalTicket").modal("toggle");
+        addCommentBtn.disabled = false;
 
     }).fail((err) => {
         console.log("Add Comment - Error Log");
@@ -157,6 +160,8 @@ function getDetails(ticketId)
         let modalTitle = document.getElementById("modalTicketTitle");
         let ticketProgress = document.getElementById("progressbar");
         let innerProgress = "";
+        let cancelTicketBtn = document.getElementById("cancelTicketBtn");
+        cancelTicketBtn.style.removeProperty("display");
         switch (res.status)
         {
             case "In Progress":
@@ -189,6 +194,7 @@ function getDetails(ticketId)
                 break;
             case "Solved":
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-success">${res.status}</span>`;
+                cancelTicketBtn.style.display = "none";
                 innerProgress = `
                     <li class="step0 active" id="step1">In Progress</li>
                     <li class="step0 active" id="step2">Assigned to <br> ${res.teamLeadName}</li>
@@ -225,6 +231,7 @@ function getDetails(ticketId)
                 break;
             default:
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
+                cancelTicketBtn.style.display = "none";
                 innerProgress = `
                     <li class="step0 active" id="step1">In Progress</li>
                     <li class="step0 active" id="step2">&emsp;</li>
@@ -273,7 +280,7 @@ function getDetails(ticketId)
         let addCommentButton = `<label for="ticket-detail-inputComment">Comments</label>
                                 <input type="text" class="form-control" id="ticket-detail-inputComment" placeholder="Add comment to this ticket...">
                                 <span id="ticketId" style="display:none"></span>
-                                <button type="button" class="btn btn-primary mt-2" onclick='addComment("${res.ticketId}")'>Comment</button>`;
+                                <button id="addCommentBtn" type="button" class="btn btn-primary mt-2" onclick='addComment("${res.ticketId}")'>Comment</button>`;
         let addCommentDiv = document.getElementById("addCommentDiv");
         let commentDiv = document.getElementById("divComments");
         let commentSection = "";

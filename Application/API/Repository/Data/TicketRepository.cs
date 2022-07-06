@@ -263,8 +263,57 @@ namespace API.Repository.Data
 
             return listTicket;
         }
+
+        public ResponseObj GetSystemStatistic()
+        {
+            ResponseObj objResp = new ResponseObj();
+
+            TicketStatusCountVM obj = new TicketStatusCountVM();
+
+            List<string> statusName = new List<string>();
+            List<int> statusCount = new List<int>();
+
+            try
+            {
+                var req = (from a in context.Tickets
+                           group a by a.Status into aType
+                           select new
+                           {
+                               StatusName = aType.Key,
+                               StatusCount = aType.Count()
+                           });
+
+                foreach (var item in req)
+                {
+                    statusName.Add(item.StatusName);
+                    statusCount.Add(item.StatusCount);
+                }
+
+                obj.StatusName = statusName;
+                obj.StatusCount = statusCount;
+
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.OK);
+                objResp.message = "Success on getting data";
+                objResp.data = obj;
+            }
+            catch (Exception ex)
+            {
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+                objResp.message = "Failed on getting data";
+                objResp.data = ex;
+            }
+
+            return objResp;
+        }
         public int UpdateTicket(UpdateTicketVM ticketVM)
         {
+            #region Email Services
+            EmailService email = new EmailService();
+            var emailReceiver = "";
+            var emailSubject = "HalpDesk Support Request";
+            var emailBody = "";
+            #endregion
+
             var ticket = context.Tickets.Find(ticketVM.TicketId);
             if (ticket == null)
             {
@@ -272,25 +321,73 @@ namespace API.Repository.Data
             }
             ticket.Status = ticketVM.Status;
             context.Entry(ticket).State = EntityState.Modified;
-            var result = context.SaveChanges();
+            var result = 0;
+            try
+            {
+                result = context.SaveChanges();
+
+                Customer custObj = context.Customers.Find(ticket.CustomerId);
+                emailReceiver = custObj.CustomerEmail;
+                emailBody = "<p>Dear Mr/Mrs " + custObj.CustomerName + "</p><br><p>Your ticket " + ticket.TicketId + " has been marked as " + ticket.Status + "." +
+                "</p><br><p>Thank you</p><br><p><small>This email is generated automatically. Please do not reply to this email.</small></p>";
+                email.Send(email.EmailSender, emailReceiver, emailSubject, emailBody);
+            }
+            catch
+            {
+
+            }
             return result;
         }
         public int AssignTicket(AssignTicketVM ticketVM)
         {
+            #region Email Services
+            EmailService email = new EmailService();
+            var emailReceiver = "";
+            var emailSubject = "HalpDesk Support Request";
+            var emailBody = "";
+            #endregion
+
             var ticket = context.Tickets.Find(ticketVM.TicketId);
             if (ticketVM.TeamLeadId != null)
             {
-
                 ticket.TeamLeadId = ticketVM.TeamLeadId;
 
+                Employee empObj = context.Employees.Find(ticketVM.TeamLeadId);
 
+                if (empObj != null)
+                {
+                    emailReceiver = empObj.EmployeeEmail;
+                    emailBody = "<p>Dear Mr/Mrs " + empObj.EmployeeName + "</p><br><p>New request for support has been received. Your ticket number is " + ticket.TicketId + "." +
+                    "</p><br><p>Thank you</p><br><p><small>This email is generated automatically. Please do not reply to this email.</small></p>";
+                }
             }
             else if (ticketVM.EmployeeId != null)
             {
                 ticket.EmployeeId = ticketVM.EmployeeId;
+
+                Employee empObj = context.Employees.Find(ticketVM.EmployeeId);
+
+                if (empObj != null)
+                {
+                    emailReceiver = empObj.EmployeeEmail;
+                    emailBody = "<p>Dear Mr/Mrs " + empObj.EmployeeName + "</p><br><p>New request for support has been received. Your ticket number is " + ticket.TicketId + "." +
+                    "</p><br><p>Thank you</p><br><p><small>This email is generated automatically. Please do not reply to this email.</small></p>";
+                }
             }
             context.Entry(ticket).State = EntityState.Modified;
-            var result = context.SaveChanges();
+            var result = 0;
+            try
+            {
+                result = context.SaveChanges();
+                if (emailReceiver != "")
+                {
+                    email.Send(email.EmailSender, emailReceiver, emailSubject, emailBody);
+                }
+            }
+            catch
+            {
+            }
+            
             return result;
         }
         public int EscalateTicket(AssignTicketVM ticketVM)

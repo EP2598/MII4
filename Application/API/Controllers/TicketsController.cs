@@ -48,6 +48,13 @@ namespace API.Controllers
             return Ok(objResponse);
         }
 
+        [HttpGet("GetSystemStatistic")]
+        public ActionResult GetSystemStatistic()
+        {
+            ResponseObj objResponse = repository.GetSystemStatistic();
+            return Ok(objResponse);
+        }
+
         [HttpPut]
         [Route("Assign")]
         public ActionResult AssignTicket(AssignTicketVM ticketVM)

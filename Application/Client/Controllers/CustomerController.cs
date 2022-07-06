@@ -62,6 +62,14 @@ namespace Client.Controllers
             var result = await _ticketRepos.GetAllTickets();
             return Json(result);
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetSystemStatistic()
+        {
+            var result = await _ticketRepos.GetSystemStatistic();
+            return Json(result);
+        }
+
         [HttpPut]
         public JsonResult UpdateTicket(UpdateTicketVM ticketVM)
         {
