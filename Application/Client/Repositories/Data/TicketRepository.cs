@@ -69,6 +69,18 @@ namespace Client.Repositories.Data
 
             return objResp;
         }
+
+        public async Task<List<TicketViewVM>> GetAllTicketsByFilter(TicketFilterVM objReq)
+        {
+            List<TicketViewVM> list = new List<TicketViewVM>();
+            StringContent content = new StringContent(JsonConvert.SerializeObject(objReq), Encoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(request + "GetAllTicketsByFilter/", content);
+
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            list = JsonConvert.DeserializeObject<List<TicketViewVM>>(apiResponse);
+            return list;
+        }
+
         public async Task<List<TicketViewVM>> GetAllTickets()
         {
             List<TicketViewVM> list = new List<TicketViewVM>();
