@@ -50,7 +50,7 @@
         <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 @if (User.IsInRole("Team Lead") || User.IsInRole("Admin"))
-                { 
+                {
                     <li class="nav-item">
                         <a class="nav-link active" asp-controller="Admin" asp-action="Assign">
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -58,7 +58,8 @@
                             </div>
                             <span class="nav-link-text ms-1">Assign Tickets</span>
                         </a>
-                    </li>   
+                    </li>
+
                 }
                 <li class="nav-item">
                     <a class="nav-link active" asp-controller="Customer" asp-action="MyTicket">
@@ -70,25 +71,35 @@
                 </li>
                 @if (User.IsInRole("Customer"))
                 {
-                <li class="nav-item">
-                    <a class="nav-link active" asp-controller="Customer" asp-action="RequestTicket">
-                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Request Tickets</span>
-                    </a>
-                </li>}
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Customer" asp-action="RequestTicket">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Request Tickets</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Customer" asp-action="SolvedTicket">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Solved Tickets</span>
+                        </a>
+                    </li>
+}
 
                 @if (User.IsInRole("Admin"))
                 {
-                <li class="nav-item">
-                    <a class="nav-link " asp-controller="Admin" asp-action="Register">
-                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Add User</span>
-                    </a>
-                </li>}
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Admin" asp-action="Register">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Add User</span>
+                        </a>
+                    </li>
+}
 
             </ul>
         </div>

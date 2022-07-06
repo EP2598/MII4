@@ -272,7 +272,21 @@ namespace API.Repository.Data
         {
             List<TicketViewVM> listTicket = new List<TicketViewVM>();
 
-            var tickets = context.Tickets.Where(x => x.TicketType == objReq.TicketType && x.TicketCategory == objReq.TicketCategory).ToList();
+            List<Ticket> tickets = new List<Ticket>();
+            if (objReq.TicketCategory == null && objReq.TicketType == null)
+            {
+                tickets = context.Tickets.ToList();
+            } else if (objReq.TicketCategory == null)
+            {
+                tickets = context.Tickets.Where(x => x.TicketType == objReq.TicketType).ToList();
+            } else if(objReq.TicketType == null)
+            {
+                tickets = context.Tickets.Where(x => x.TicketCategory == objReq.TicketCategory).ToList();
+            } else
+            {
+                tickets = context.Tickets.Where(x => x.TicketType == objReq.TicketType && x.TicketCategory == objReq.TicketCategory).ToList();
+            }
+ 
 
             foreach (var item in tickets)
             {
@@ -355,7 +369,7 @@ namespace API.Repository.Data
         public int UpdateTypeTicket(UpdateTypeVM ticketVM)
         {
             Ticket ticket = context.Tickets.Find(ticketVM.TicketId);
-            ticket.TicketType = ticketVM.Type;
+            ticket.TicketCategory = ticketVM.Type;
 
             context.Entry(ticket).State = EntityState.Modified;
             var result = context.SaveChanges();

@@ -188,3 +188,7 @@ body {
     #progressbar li.active:after {
         background: rgb(252, 103, 49);
     }
+
+.dropdown-group > .dropdown{
+    display: inline-block;
+}

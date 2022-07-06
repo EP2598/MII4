@@ -96,5 +96,10 @@ namespace Client.Controllers
         {
             return View();
         }
+
+        public IActionResult SolvedTicket()
+        {
+            return View();
+        }
     }
 }
