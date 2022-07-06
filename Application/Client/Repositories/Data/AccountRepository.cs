@@ -70,11 +70,16 @@ namespace Client.Repositories.Data
             return objResp;
         }
 
-        public HttpStatusCode Register(RegisterVM registerVM)
+        public async Task<ResponseObj> Register(RegisterVM registerVM)
         {
+            ResponseObj objResp = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(registerVM), Encoding.UTF8, "application/json");
-            var result = httpClient.PostAsync(address.link + request + "Register/", content).Result;
-            return result.StatusCode;
+            var result = await httpClient.PostAsync(address.link + request + "Register/", content);
+
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            objResp = JsonConvert.DeserializeObject<ResponseObj>(apiResponse);
+
+            return objResp;
         }
 
     }

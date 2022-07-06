@@ -26,9 +26,21 @@ namespace API.Controllers
         public ActionResult Register(RegisterVM register)
         {
             var result = repository.Register(register);
-            if(result < 1)
+            if (result < 1)
             {
                 return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Registered User Failed!" });
+            }
+            else if (result == 401)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Email sudah terdaftar" });
+            }
+            else if (result == 402)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Nomor telepon sudah terdaftar" });
+            }
+            else if (result == 403)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Email sudah terdaftar. Nomor telepon sudah terdaftar" });
             }
             else
             {

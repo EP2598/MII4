@@ -30,6 +30,9 @@ $.ajax({
 
 
 function Register() {
+    let btnRegister = document.getElementById("btnRegister");
+    btnRegister.disabled = true;
+
     var obj = new Object();
     obj.Name = $("#name-register").val();
     obj.Email = $("#email-register").val();
@@ -42,10 +45,41 @@ function Register() {
         data: obj,
         type: "post"
     }).done((res) => {
-        Swal.fire({
-            icon: 'success',
-            title: 'User berhasil dibuat',
-            text: '',
-        })
+        console.log(res);
+        console.log(res.result.statusCode);
+        btnRegister.disabled = false;
+        if (res.result.statusCode == 400) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Warning',
+                text: res.result.message,
+            })
+        }
+        else {
+            Swal.fire({
+                icon: 'success',
+                title: 'User berhasil dibuat',
+                text: '',
+            })
+        }
     })
+}
+
+function validateTeamLead() {
+    //Disable Phone for Employee
+    if (document.getElementById("roleid-register").value == 1 || document.getElementById("roleid-register").value == 2 || document.getElementById("roleid-register").value == 3) {
+        document.getElementById("phone-register").disabled = true;
+    }
+    else {
+        document.getElementById("phone-register").disabled = false;
+    }
+    //Disable Team Lead for TeamLead / Customer
+    if (document.getElementById("roleid-register").value == 1 || document.getElementById("roleid-register").value == 2 || document.getElementById("roleid-register").value == 4) {
+        document.getElementById("teamleadid-register").value = "";
+        document.getElementById("teamleadid-register").disabled = true;
+    }
+    else {
+        $("#teamleadid-register").val($("#teamleadid-register option:first").val());
+        document.getElementById("teamleadid-register").disabled = false;
+    }
 }

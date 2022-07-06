@@ -39,14 +39,14 @@
             <div class="col-4">
                 <div class="form-group">
                     <label for="roleid-register">Role</label>
-                    <select id="roleid-register" name="role-id" class="form-control" required>
+                    <select id="roleid-register" name="role-id" class="form-control" onchange="validateTeamLead()" required>
                     </select>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <button type="button" class="btn bg-gradient-primary" onclick="Register()">Submit</button>
+                <button id="btnRegister" type="button" class="btn bg-gradient-primary" onclick="Register()">Submit</button>
             </div>
         </div>
     </form>

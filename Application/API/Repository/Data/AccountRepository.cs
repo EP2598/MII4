@@ -97,6 +97,45 @@ namespace API.Repository.Data
         }
         public int Register(RegisterVM register)
         {
+            Employee validateEmpEmail = (from a in context.Employees where a.EmployeeEmail == register.Email select a).FirstOrDefault();
+            Customer validateCustEmail = (from a in context.Customers where a.CustomerEmail == register.Email select a).FirstOrDefault();
+            if (validateEmpEmail != null)
+            {
+                return 401;
+            }
+            else if (validateCustEmail != null)
+            {
+                if (register.Phone != null)
+                {
+                    Customer validateCustPhone = (from a in context.Customers where a.CustomerPhone == register.Phone select a).FirstOrDefault();
+                    if (validateCustPhone != null)
+                    {
+                        return 403;
+                    }
+                    else
+                    {
+                        return 401;
+                    }
+                }
+                else
+                {
+                    return 401;
+                }
+            }
+            else
+            {
+                if (register.Phone != null)
+                {
+                    Customer validateCustPhone = (from a in context.Customers where a.CustomerPhone == register.Phone select a).FirstOrDefault();
+                    if (validateCustPhone != null)
+                    {
+                        return 402;
+                    }
+                }
+            }
+            
+
+
             if(register.RoleID == 4)
             {
                 var CustomerID = "COS" + DateTime.Now.ToString("MMddyy") + GenerateID(register.RoleID);
@@ -140,7 +179,7 @@ namespace API.Repository.Data
                     EmployeeId = employeeID,
                     EmployeeName = register.Name,
                     EmployeeEmail = register.Email,
-                    TeamLeadId = register.TeamLeadID
+                    TeamLeadId = (register.RoleID == 2  || register.RoleID == 1) ? null : register.TeamLeadID
                 };
                 Account account= new Account
                 {
