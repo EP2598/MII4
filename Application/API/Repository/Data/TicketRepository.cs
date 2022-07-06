@@ -29,6 +29,7 @@ namespace API.Repository.Data
                 TicketId = ticketID,
                 CustomerId = request.CustomerID,
                 TeamLeadId = request.TeamLeadID,
+                TicketCategory = request.TicketCategory,
                 TicketType = request.TicketType,
                 Description = request.Description,
                 Status = "In Progress",
@@ -154,6 +155,7 @@ namespace API.Repository.Data
                 ticket.TeamLeadName = (from a in context.Employees where a.EmployeeId == item.TeamLeadId select a.EmployeeName).FirstOrDefault();
                 ticket.EmployeeId = item.EmployeeId;
                 ticket.EmployeeName = (from a in context.Employees where a.EmployeeId == item.EmployeeId select a.EmployeeName).FirstOrDefault();
+                ticket.TicketCategory = item.TicketCategory;
                 ticket.TicketType = item.TicketType;
                 ticket.Description = item.Description.Length > 31 ? item.Description.Substring(0,30) + "..." : item.Description;
                 ticket.Status = item.Status;
@@ -215,6 +217,7 @@ namespace API.Repository.Data
             response.TeamLeadName = (from a in context.Employees where a.EmployeeId == ticketObj.TeamLeadId select a.EmployeeName).FirstOrDefault();
             response.EmployeeId = ticketObj.EmployeeId;
             response.EmployeeName = (from a in context.Employees where a.EmployeeId == ticketObj.EmployeeId select a.EmployeeName).FirstOrDefault();
+            response.TicketCategory = ticketObj.TicketCategory;
             response.TicketType = ticketObj.TicketType;
             response.Description = ticketObj.Description;
             response.Status = ticketObj.Status;
@@ -253,6 +256,7 @@ namespace API.Repository.Data
                 ticket.TeamLeadName = (from a in context.Employees where a.EmployeeId == item.TeamLeadId select a.EmployeeName).FirstOrDefault();
                 ticket.EmployeeId = item.EmployeeId;
                 ticket.EmployeeName = (from a in context.Employees where a.EmployeeId == item.EmployeeId select a.EmployeeName).FirstOrDefault();
+                ticket.TicketCategory = item.TicketCategory;
                 ticket.TicketType = item.TicketType;
                 ticket.Description = item.Description.Length > 31 ? item.Description.Substring(0, 30) + "..." : item.Description;
                 ticket.Status = item.Status;

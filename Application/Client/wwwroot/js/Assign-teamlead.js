@@ -19,6 +19,7 @@ $.ajax({
                     <td>${value.customerName}</td>
                     <td>${value.teamLeadName}</td>
                     <td>${value.employeeName}</td>
+                    <td>${value.ticketCategory}</td>
                     <td>${value.ticketType}</td>
                     <td><select class="form-control ticket-type-${value.ticketId}" id="${value.ticketId}">`
         if (value.status == "In Progress") {

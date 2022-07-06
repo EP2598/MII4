@@ -18,7 +18,7 @@
                     <td>${value.customerName}</td>
                     <td>${value.teamLeadName}</td>
                     <td>${value.employeeName}</td>`
-        if (value.ticketType == 'Other') {
+        if (value.ticketCategory == 'Other') {
             text += `<td>
                         <select class="form-control ticket-type-${value.ticketId}" id="${value.ticketId}">
                             <option selected>Other</option>
@@ -28,9 +28,11 @@
                       </td>
                      `;
         } else {
-            text += `<td>${value.ticketType}</td>`;
+            text += `<td>${value.ticketCategory}</td>`;
         }
-        text += `<td><select class="form-control ticket-status-${value.ticketId}" id="${value.ticketId}">`
+
+        text += `<td>${value.ticketType}</td>
+                  <td><select class="form-control ticket-status-${value.ticketId}" id="${value.ticketId}">`
         if (value.status == "In Progress") {
             text += `<option value="In Progress" selected>In Progress</option>
                     <option value="Solved">Solved</option>
@@ -53,10 +55,10 @@
         text += `</td>
                     <td>${moment(value.createdAt).format('DD-MM-yyyy')}</td>`;
         if (!teamLeadexist) {
-            text += `<td><button type="button" onclick="AssignModel('${value.ticketId}')" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#assignModal">Assign Team Lead</button></td>
+            text += `<td><span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Assign Team Lead" ><button type="button" onclick="AssignModel('${value.ticketId}')" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#assignModal"><i class="fa-solid fa-person-circle-plus"></i></button></span></td>
                     </tr>`;
         } else {
-            text += `<td><button type="button" onclick="AssignModel('${value.ticketId}')" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#assignModal">Change Team Lead</button></td>
+            text += `<td><span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change Team Lead" ><button type="button" onclick="AssignModel('${value.ticketId}')" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#assignModal"><i class="fa-solid fa-people-arrows-left-right"></span></button></td>
                     </tr>`
         }
     })
