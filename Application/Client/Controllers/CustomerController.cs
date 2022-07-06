@@ -63,6 +63,14 @@ namespace Client.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> GetAllTicketsByFilter(TicketFilterVM objReq)
+        {
+            var result = await _ticketRepos.GetAllTicketsByFilter(objReq);
+            return Json(result);
+        }
+
+
         [HttpGet]
         public async Task<JsonResult> GetSystemStatistic()
         {
@@ -93,6 +101,11 @@ namespace Client.Controllers
             return View();
         }
         public IActionResult TicketDetails()
+        {
+            return View();
+        }
+
+        public IActionResult SolvedTicket()
         {
             return View();
         }

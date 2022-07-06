@@ -48,6 +48,13 @@ namespace API.Controllers
             return Ok(objResponse);
         }
 
+        [HttpPost("GetAllTicketsByFilter")]
+        public ActionResult GetAllTicketsByFilter(TicketFilterVM objReq)
+        {
+            List<TicketViewVM> objResponse = repository.GetAllTicketsByFilter(objReq);
+            return Ok(objResponse);
+        }
+
         [HttpGet("GetSystemStatistic")]
         public ActionResult GetSystemStatistic()
         {

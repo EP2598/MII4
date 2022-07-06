@@ -74,6 +74,7 @@ namespace API.Repository.Data
             
             return result;
         }
+
         private string GenerateID()
         {
             string count;
@@ -267,6 +268,56 @@ namespace API.Repository.Data
 
             return listTicket;
         }
+        public List<TicketViewVM> GetAllTicketsByFilter(TicketFilterVM objReq)
+        {
+            List<TicketViewVM> listTicket = new List<TicketViewVM>();
+
+            List<Ticket> tickets = new List<Ticket>();
+            if (objReq.TicketCategory == null && objReq.TicketType == null)
+            {
+                tickets = context.Tickets.ToList();
+            } else if (objReq.TicketCategory == null)
+            {
+                tickets = context.Tickets.Where(x => x.TicketType == objReq.TicketType).ToList();
+            } else if(objReq.TicketType == null)
+            {
+                tickets = context.Tickets.Where(x => x.TicketCategory == objReq.TicketCategory).ToList();
+            } else
+            {
+                tickets = context.Tickets.Where(x => x.TicketType == objReq.TicketType && x.TicketCategory == objReq.TicketCategory).ToList();
+            }
+ 
+
+            foreach (var item in tickets)
+            {
+                List<Comment> comments = (from comment in context.Comments
+                                          where comment.TicketId == item.TicketId
+                                          select comment).ToList();
+
+                Customer custObj = (from a in context.Customers
+                                    where a.CustomerId == item.CustomerId
+                                    select a).FirstOrDefault();
+
+                TicketViewVM ticket = new TicketViewVM();
+                ticket.TicketId = item.TicketId;
+                ticket.CustomerId = item.CustomerId;
+                ticket.CustomerName = custObj.CustomerName;
+                ticket.CustomerEmail = custObj.CustomerEmail;
+                ticket.TeamLeadId = item.TeamLeadId;
+                ticket.TeamLeadName = (from a in context.Employees where a.EmployeeId == item.TeamLeadId select a.EmployeeName).FirstOrDefault();
+                ticket.EmployeeId = item.EmployeeId;
+                ticket.EmployeeName = (from a in context.Employees where a.EmployeeId == item.EmployeeId select a.EmployeeName).FirstOrDefault();
+                ticket.TicketCategory = item.TicketCategory;
+                ticket.TicketType = item.TicketType;
+                ticket.Description = item.Description.Length > 31 ? item.Description.Substring(0, 30) + "..." : item.Description;
+                ticket.Status = item.Status;
+                ticket.CreatedAt = item.CreatedAt;
+
+                listTicket.Add(ticket);
+            }
+
+            return listTicket;
+        }
 
         public ResponseObj GetSystemStatistic()
         {
@@ -415,7 +466,7 @@ namespace API.Repository.Data
         public int UpdateTypeTicket(UpdateTypeVM ticketVM)
         {
             Ticket ticket = context.Tickets.Find(ticketVM.TicketId);
-            ticket.TicketType = ticketVM.Type;
+            ticket.TicketCategory = ticketVM.Type;
 
             context.Entry(ticket).State = EntityState.Modified;
             var result = context.SaveChanges();
