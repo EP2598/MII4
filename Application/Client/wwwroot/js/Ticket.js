@@ -7,6 +7,7 @@
         CustomerEmail: "",
         CustomerPhone: "",
         TeamLeadID: "",
+        TicketCategory: $("#inputTicketCategory").val(),
         TicketType: $("#inputTicketType").val(),
         Description: $("#inputDescription").val(),
     }
@@ -376,7 +377,7 @@ $(document).ready(function () {
                     <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title"><span class="badge badge-success">${res[i].ticketType}</span> ${res[i].ticketId}</h5>
+                                    <h5 class="card-title"><span class="badge badge-info mr-2">${res[i].ticketCategory}</span><span class="badge badge-success">${res[i].ticketType}</span> ${res[i].ticketId}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">${res[i].status}</h6>
                                     <p class="card-text">${res[i].description}</p>
                                     <a class="btn btn-primary" data-toggle="modal" data-target="#modalTicket" onclick='getDetails("${res[i].ticketId}")'>Details</a>

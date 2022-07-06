@@ -115,5 +115,17 @@ namespace Client.Repositories.Data
 
             return objResp;
         }
+
+        public async Task<ResponseObj> UpdateTypeTicket(UpdateTypeVM ticketVM)
+        {
+            ResponseObj obj = null;
+
+            StringContent content = new StringContent(JsonConvert.SerializeObject(ticketVM), Encoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(request + "UpdateType", content);
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            obj = JsonConvert.DeserializeObject<ResponseObj>(apiResponse);
+
+            return obj;
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace API.Models.VM
         public string TeamLeadName { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string TicketCategory { get; set; }
         public string TicketType { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }

@@ -19,8 +19,9 @@ $.ajax({
                     <td>${value.customerName}</td>
                     <td>${value.teamLeadName}</td>
                     <td>${value.employeeName}</td>
+                    <td>${value.ticketCategory}</td>
                     <td>${value.ticketType}</td>
-                    <td><select class="form-control ticket-type" id="${value.ticketId}">`
+                    <td><select class="form-control ticket-type-${value.ticketId}" id="${value.ticketId}">`
         if (value.status == "In Progress") {
             text += `<option value="In Progress" selected>In Progress</option>
                     <option value="Solved">Solved</option>
@@ -59,34 +60,43 @@ $.ajax({
 });
 
 $(document).ready(function () {
-    $(`.ticket-type`).change(function (e) {
-        var elem = $(this);
-        var obj = {
-            TicketId: elem.attr('id'),
-            Status: e.target.value
-        };
-        console.log(obj);
-        $.ajax({
-            url: "../Customer/UpdateTicket",
-            type: "put",
-            data: obj
-        }).done((res) => {
-            switch (res) {
-                case 200:
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Update status berhasil dilakukan!',
-                    });
-                    break;
-                default:
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Update status gagal dilakukan!',
-                    });
-                    break;
-            }
+    $.ajax({
+        url: "../Customer/GetMyTickets",
+        type: "post",
+        data: objReq
+    }).done((res) => {
+        $.each(res, function (key, value) {
+            $(`.ticket-type-${value.ticketId}`).change(function (e) {
+                var elem = $(this);
+                var obj = {
+                    TicketId: elem.attr('id'),
+                    Status: e.target.value
+                };
+                console.log(obj);
+                $.ajax({
+                    url: "../Customer/UpdateTicket",
+                    type: "put",
+                    data: obj
+                }).done((res) => {
+                    switch (res) {
+                        case 200:
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Update status berhasil dilakukan!',
+                            });
+                            break;
+                        default:
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Update status gagal dilakukan!',
+                            });
+                            break;
+                    }
+                })
+            })
         })
     })
+    
 })
 
 function AssignModel(ticketId) {
