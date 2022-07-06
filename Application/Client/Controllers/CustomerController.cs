@@ -62,6 +62,14 @@ namespace Client.Controllers
             var result = await _ticketRepos.GetAllTickets();
             return Json(result);
         }
+
+        [HttpPost]
+        public async Task<JsonResult> GetAllTicketsByFilter(TicketFilterVM objReq)
+        {
+            var result = await _ticketRepos.GetAllTicketsByFilter(objReq);
+            return Json(result);
+        }
+
         [HttpPut]
         public JsonResult UpdateTicket(UpdateTicketVM ticketVM)
         {
