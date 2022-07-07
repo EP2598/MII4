@@ -23,6 +23,19 @@ namespace API.Repository.Data
 
         public int Request(RequestTicketVM request)
         {
+            //validation form
+            if (request.TicketCategory == null)
+            {
+                return -1;
+            }
+            else if (request.TicketType == null)
+            {
+                return -2;
+            }
+            else if (request.Description == null)
+            {
+                return -3;
+            }
             string ticketID = "T-" + GenerateID();
             Ticket ticket = new Ticket
             {

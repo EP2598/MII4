@@ -97,6 +97,32 @@ namespace API.Repository.Data
         }
         public int Register(RegisterVM register)
         {
+            //Validation name and email
+            if (register.Name == null)
+            {
+                return -1;
+            }
+
+            if (register.Email == null)
+            {
+                return -2;
+            }
+
+            if (register.RoleID == 3)
+            {
+                if (register.TeamLeadID == null)
+                {
+                    return -3;
+                }
+            }
+            else if (register.RoleID == 4)
+            {
+                if (register.Phone == null)
+                {
+                    return -4;
+                }
+            }
+
             Employee validateEmpEmail = (from a in context.Employees where a.EmployeeEmail == register.Email select a).FirstOrDefault();
             Customer validateCustEmail = (from a in context.Customers where a.CustomerEmail == register.Email select a).FirstOrDefault();
             if (validateEmpEmail != null)
@@ -133,8 +159,6 @@ namespace API.Repository.Data
                     }
                 }
             }
-            
-
 
             if(register.RoleID == 4)
             {
