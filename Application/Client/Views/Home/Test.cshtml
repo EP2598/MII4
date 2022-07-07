@@ -3,6 +3,14 @@
     Layout = "LayoutHome";
 }
 
+@if (User.Identity.IsAuthenticated)
+{
+    var userAccountId = User.Claims.Where(x => x.Type.Equals("Id")).FirstOrDefault().Value;
+    <p id="currUserAccountId" style="display:none">@userAccountId</p>
+    var userRole = User.IsInRole("Admin") ? "Admin" : User.IsInRole("Team Lead") ? "Team Lead" : User.IsInRole("Developer") ? "Developer" : "Customer";
+    <p id="currUserRole" style="display:none">@userRole</p>
+}
+
 <!-- If Admin, Then show Ticket List -->
 <div class="card">
     <div class="card-body p-3">
@@ -32,13 +40,28 @@
                             </div>
                         </div>
                     }
+                    else if (User.IsInRole("Team Lead"))
+                    {
+                        <div class="form-row">
+                            <div class="col-md-8 mb-3">
+                                <div id="cardTotalTickets" class="card mb-2">
+                                    <div class="card-header" data-toggle="collapse" data-target="#innerSelfDetail" aria-expanded="false">
+                                        Subordinate's Total Ticket
+                                    </div>
+                                    <div id="innerSelfDetail" class="card-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                     else
                     {
                         <div class="form-row">
                             <div class="col-md-8 mb-3">
                                 <div id="cardTotalTickets" class="card mb-2">
                                     <div class="card-header" data-toggle="collapse" data-target="#innerSelfDetail" aria-expanded="false">
-                                        Tickets Status
+                                        My Tickets Status
                                     </div>
                                     <div id="innerSelfDetail" class="card-body">
 

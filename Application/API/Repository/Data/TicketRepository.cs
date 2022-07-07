@@ -360,6 +360,116 @@ namespace API.Repository.Data
 
             return objResp;
         }
+        public ResponseObj GetSubordinateStatistic(string teamLeadId)
+        {
+            ResponseObj objResp = new ResponseObj();
+
+            TicketSubordinateCountVM obj = new TicketSubordinateCountVM();
+            List<string> listName = new List<string>();
+            List<int> listCount = new List<int>();
+
+            /* SQL Statement 
+             
+            SELECT EMP.EmployeeName, EMP.EmployeeId, COUNT(TI.TicketId) AS [Total Ticket] FROM EMPLOYEES EMP
+            LEFT OUTER JOIN TICKETS TI ON EMP.EmployeeId = TI.EmployeeId
+            WHERE EMP.TeamLeadId = 'Input Team Lead ID'
+            GROUP BY EMP.EmployeeName, EMP.EmployeeId
+             
+             */
+
+            var req = (from emp in context.Employees
+                       where emp.TeamLeadId == teamLeadId
+                       join ti in context.Tickets
+                       on emp.EmployeeId equals ti.EmployeeId into gj
+                       from tickets in gj.DefaultIfEmpty()
+                       group tickets by emp.EmployeeId into grouped
+                       select new
+                       {
+                           EmployeeId = grouped.Key,
+                           TicketCount = grouped.Count(x => x.TicketId != null)
+                       }).ToList();
+
+            foreach (var item in req)
+            {
+                string empName = context.Employees.Find(item.EmployeeId).EmployeeName;
+                listName.Add(empName);
+                listCount.Add(item.TicketCount);
+            }
+
+            obj.EmployeeName = listName;
+            obj.TicketCount = listCount;
+
+            objResp.statusCode = Convert.ToInt32(HttpStatusCode.OK);
+            objResp.message = "OK";
+            objResp.data = obj;
+
+            return objResp;
+        }
+        public ResponseObj GetPersonalStatistic(TicketOwnerVM objReq) 
+        {
+            ResponseObj objResp = new ResponseObj();
+
+            TicketStatusCountVM obj = new TicketStatusCountVM();
+
+            List<string> statusName = new List<string>();
+            List<int> statusCount = new List<int>();
+
+            Employee empObj = (from a in context.Employees where a.EmployeeId == objReq.AccountId select a).FirstOrDefault();
+            Customer custObj = (from a in context.Customers where a.CustomerId == objReq.AccountId select a).FirstOrDefault();
+
+            try
+            {
+                if (empObj != null)
+                {
+                    var req = (from a in context.Tickets
+                               where a.EmployeeId == empObj.EmployeeId
+                               group a by a.Status into aType
+                               select new
+                               {
+                                   StatusName = aType.Key,
+                                   StatusCount = aType.Count()
+                               });
+
+                    foreach (var item in req)
+                    {
+                        statusName.Add(item.StatusName);
+                        statusCount.Add(item.StatusCount);
+                    }
+                }
+                else
+                {
+                    var req = (from a in context.Tickets
+                               where a.CustomerId == custObj.CustomerId
+                               group a by a.Status into aType
+                               select new
+                               {
+                                   StatusName = aType.Key,
+                                   StatusCount = aType.Count()
+                               });
+
+                    foreach (var item in req)
+                    {
+                        statusName.Add(item.StatusName);
+                        statusCount.Add(item.StatusCount);
+                    }
+                }                
+
+                obj.StatusName = statusName;
+                obj.StatusCount = statusCount;
+
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.OK);
+                objResp.message = "Success on getting data";
+                objResp.data = obj;
+            }
+            catch (Exception ex)
+            {
+                objResp.statusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+                objResp.message = "Failed on getting data";
+                objResp.data = ex;
+            }
+
+            return objResp;
+        }
         public int UpdateTicket(UpdateTicketVM ticketVM)
         {
             #region Email Services

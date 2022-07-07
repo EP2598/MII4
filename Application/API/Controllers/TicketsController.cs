@@ -62,6 +62,20 @@ namespace API.Controllers
             return Ok(objResponse);
         }
 
+        [HttpPost("GetSubordinateStatistic")]
+        public ActionResult GetSubordinateStatistic(TicketOwnerVM objReq)
+        {
+            ResponseObj objResponse = repository.GetSubordinateStatistic(objReq.AccountId);
+            return Ok(objResponse);
+        }
+
+        [HttpPost("GetPersonalStatistic")]
+        public ActionResult GetPersonalStatistic(TicketOwnerVM objReq)
+        {
+            ResponseObj objResponse = repository.GetPersonalStatistic(objReq);
+            return Ok(objResponse);
+        }
+
         [HttpPut]
         [Route("Assign")]
         public ActionResult AssignTicket(AssignTicketVM ticketVM)

@@ -102,6 +102,27 @@ namespace Client.Repositories.Data
             }
             return obj;
         }
+        public async Task<ResponseObj> GetSubordinateStatistic(TicketOwnerVM objReq) 
+        {
+            ResponseObj obj = new ResponseObj();
+            StringContent content = new StringContent(JsonConvert.SerializeObject(objReq), Encoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(request + "GetSubordinateStatistic/", content);
+
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            obj = JsonConvert.DeserializeObject<ResponseObj>(apiResponse);
+            return obj;
+        }
+
+        public async Task<ResponseObj> GetPersonalStatistic(TicketOwnerVM objReq)
+        {
+            ResponseObj obj = new ResponseObj();
+            StringContent content = new StringContent(JsonConvert.SerializeObject(objReq), Encoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(request + "GetPersonalStatistic/", content);
+
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            obj = JsonConvert.DeserializeObject<ResponseObj>(apiResponse);
+            return obj;
+        }
         public HttpStatusCode UpdateTicket(UpdateTicketVM ticketVM)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(ticketVM), Encoding.UTF8, "application/json");

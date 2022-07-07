@@ -78,6 +78,20 @@ namespace Client.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> GetSubordinateStatistic(TicketOwnerVM objReq)
+        {
+            var result = await _ticketRepos.GetSubordinateStatistic(objReq);
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GetPersonalStatistic(TicketOwnerVM objReq)
+        {
+            var result = await _ticketRepos.GetPersonalStatistic(objReq);
+            return Json(result);
+        }
+
         [HttpPut]
         public JsonResult UpdateTicket(UpdateTicketVM ticketVM)
         {
