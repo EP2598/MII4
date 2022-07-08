@@ -52,12 +52,23 @@
                 @if (User.IsInRole("Team Lead") || User.IsInRole("Admin"))
                 {
                     <li class="nav-item">
+                        @if (User.IsInRole("Admin"))
+                        {
                         <a class="nav-link active" asp-controller="Admin" asp-action="Assign">
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
                             </div>
                             <span class="nav-link-text ms-1">Assign Tickets</span>
                         </a>
+                        }
+                        else { 
+                        <a class="nav-link active" asp-controller="TeamLead" asp-action="Assign">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Assign Tickets</span>
+                        </a>
+                        }
                     </li>
 
                 }
@@ -77,6 +88,14 @@
                                 <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
                             </div>
                             <span class="nav-link-text ms-1">Request Tickets</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Customer" asp-action="SolvedTicket">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Solved Tickets</span>
                         </a>
                     </li>
                 }
@@ -100,17 +119,10 @@
         <!-- Navbar -->
         <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
             <div class="container-fluid py-1 px-3">
-                @RenderSection("Pages", required: false)
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                    <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                        <div class="input-group">
-                            <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" placeholder="Type here...">
-                        </div>
-                    </div>
                     <ul class="navbar-nav  justify-content-end">
                         <li class="nav-item d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
+                            <a class="nav-link text-white font-weight-bold px-0" asp-controller="Login" asp-action="Logout">
                                 <i class="fa fa-user me-sm-1"></i>
                                 <span class="d-sm-inline d-none">Log Out</span>
                             </a>

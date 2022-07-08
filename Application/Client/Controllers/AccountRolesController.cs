@@ -1,6 +1,7 @@
 ﻿using API.Models;
 using API.Models.VM;
 using Client.Repositories.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Client.Controllers
 {
+    [Authorize]
     public class AccountRolesController : BaseController<AccountRole, AccountRoleRepository, string>
     {
         private readonly AccountRoleRepository repository;

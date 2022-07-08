@@ -55,7 +55,21 @@ namespace Client.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Test", "Home");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Index", "Login");
         }
 
         public IActionResult ChangePassword()

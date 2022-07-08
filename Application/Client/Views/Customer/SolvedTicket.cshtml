@@ -59,6 +59,9 @@
                     <div id="cardDiv">
 
                     </div>
+                    <div id="pagination-container">
+
+                    </div>
                     <div class="modal fade border-top" id="modalTicket" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -123,26 +126,16 @@
                                                 </div>
                                                 <div class="form-row">
                                                     <div id="progresstrack">
-                                                        <ul id="progressbar">
+                                                        <ul id="ProgressBar" class="events">
                                                         </ul>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div id="addCommentDiv" class="col-md-8 mb-3 mt-2" style="display: none;">
-                                                <label for="ticket-detail-inputComment">Comments</label>
-                                                <input type="text" class="form-control" id="ticket-detail-inputComment" placeholder="Add comment to this ticket...">
-                                                <span id="ticketId" style="display:none"></span>
                                             </div>
                                         </div>
                                         <div id="divComments">
 
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" onclick="confirmCancel()">Cancel Ticket</button>
                                 </div>
                             </div>
                         </div>
@@ -157,6 +150,7 @@
 
 @section CSS {
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/assets/css/pagination.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
 }
 
@@ -165,5 +159,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/assets/js/pagination.min.js" asp-append-version="true"></script>
     <script src="~/js/SolvedTicket.js" asp-append-version="true"></script>
 }

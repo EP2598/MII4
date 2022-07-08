@@ -36,21 +36,31 @@
         if (value.status == "In Progress") {
             text += `<option value="In Progress" selected>In Progress</option>
                     <option value="Solved">Solved</option>
-                    <option value="Declined">Declined</option>`
+                    <option value="Declined">Declined</option>
+                    <option value="Cancelled">Cancelled</option>`
         } else if (value.status == "Solved") {
             text += `<option value="In Progress">In Progress</option>
                     <option value="Solved" selected>Solved</option>
-                    <option value="Declined">Declined</option>`
+                    <option value="Declined">Declined</option>
+                    <option value="Cancelled">Cancelled</option>`
         } else if (value.status == "Request to Escalate") {
             text += `<option value="In Progress">In Progress</option>
                     <option value="Request to Escalate" selected>Request to Escalate</option>
                     <option value="Solved">Solved</option>
-                    <option value="Declined">Declined</option>`
+                    <option value="Declined">Declined</option>
+                    <option value="Cancelled">Cancelled</option>`
+        }
+        else if (value.status == "Declined") {
+            text += `<option value="In Progress">In Progress</option>
+                    <option value="Solved">Solved</option>
+                    <option value="Declined" selected>Declined</option>
+                    <option value="Cancelled">Cancelled</option>`
         }
         else {
             text += `<option value="In Progress">In Progress</option>
                     <option value="Solved">Solved</option>
-                    <option value="Declined" selected>Declined</option>`
+                    <option value="Declined">Declined</option>
+                    <option value="Cancelled" selected>Cancelled</option>`
         }
         text += `</td>
                     <td>${moment(value.createdAt).format('DD-MM-yyyy')}</td>`;

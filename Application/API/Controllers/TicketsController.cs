@@ -25,7 +25,19 @@ namespace API.Controllers
         public ActionResult RequestTicket(RequestTicketVM request)
         {
             var result = repository.Request(request);
-            if(result < 1)
+            if (result == -1)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Kategori belum terpilih!", data = "" });
+            }
+            else if (result == -2)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Tipe tiket belum terpilih!", data = "" });
+            }
+            else if (result == -3)
+            {
+                return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Deskripsi belum terisi!", data = "" });
+            }
+            else if (result < 1)
             {
                 return StatusCode(400, new { statusCode = HttpStatusCode.BadRequest, message = "Request Ticket Failed!", data="" });
             }
