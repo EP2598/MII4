@@ -107,3 +107,6 @@ D:\GitProject\MII4\Application\Client\obj\Debug\netcoreapp3.1\Client.csproj.Copy
 D:\GitProject\MII4\Application\Client\obj\Debug\netcoreapp3.1\Client.dll
 D:\GitProject\MII4\Application\Client\obj\Debug\netcoreapp3.1\Client.pdb
 D:\GitProject\MII4\Application\Client\obj\Debug\netcoreapp3.1\Client.genruntimeconfig.cache
+D:\GitProject\MII4\Application\Client\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Assign.cshtml.g.cs
+D:\GitProject\MII4\Application\Client\obj\Debug\netcoreapp3.1\Razor\Views\Customer\SolvedTicket.cshtml.g.cs
+D:\GitProject\MII4\Application\Client\obj\Debug\netcoreapp3.1\Razor\Views\TeamLead\Assign.cshtml.g.cs

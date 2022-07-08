@@ -288,16 +288,16 @@ namespace API.Repository.Data
             List<Ticket> tickets = new List<Ticket>();
             if (objReq.TicketCategory == null && objReq.TicketType == null)
             {
-                tickets = context.Tickets.ToList();
+                tickets = context.Tickets.Where(x => x.Status == "Solved").ToList();
             } else if (objReq.TicketCategory == null)
             {
-                tickets = context.Tickets.Where(x => x.TicketType == objReq.TicketType).ToList();
+                tickets = context.Tickets.Where(x => x.TicketType == objReq.TicketType && x.Status == "Solved").ToList();
             } else if(objReq.TicketType == null)
             {
-                tickets = context.Tickets.Where(x => x.TicketCategory == objReq.TicketCategory).ToList();
+                tickets = context.Tickets.Where(x => x.TicketCategory == objReq.TicketCategory && x.Status == "Solved").ToList();
             } else
             {
-                tickets = context.Tickets.Where(x => x.TicketType == objReq.TicketType && x.TicketCategory == objReq.TicketCategory).ToList();
+                tickets = context.Tickets.Where(x => x.TicketType == objReq.TicketType && x.TicketCategory == objReq.TicketCategory && x.Status == "Solved").ToList();
             }
  
 

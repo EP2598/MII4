@@ -91,10 +91,10 @@ namespace Client
                 {
                     res.Redirect("/forbidden");
                 }
-/*                else if (res.StatusCode.Equals((int)HttpStatusCode.NotFound))
+                else if (res.StatusCode.Equals((int)HttpStatusCode.NotFound))
                 {
                     res.Redirect("/notfound");
-                }*/
+                }
             });
 
             app.UseHttpsRedirection();

@@ -143,6 +143,63 @@ function submitEdit(commentId)
     });
 }
 
+function confirmCancel(ticketId) {
+    Swal.fire({
+        title: 'Cancel ticket?',
+        text: "Are you sure you want to cancel this ticket?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let objReq =
+            {
+                TicketId: ticketId,
+                Status: "Cancelled"
+            }
+            $.ajax({
+                url: "../Customer/UpdateTicket",
+                type: "put",
+                data: objReq
+            }).done((res) => {
+                if (res == 200) {
+                    Swal.fire(
+                        'Success!',
+                        'Your request has been submitted',
+                        'success'
+                    ).then((result) => {
+                        location.reload();
+                    });
+                }
+                else {
+                    Swal.fire(
+                        'Failed!',
+                        'Your request has not been submitted',
+                        'error'
+                    );
+                }
+            });
+            
+        }
+    })
+
+    let objReq =
+    {
+        TicketId: ticketId,
+        Status: "Cancelled"
+    }
+    $.ajax({
+        url: "../Customer/UpdateTicket",
+        type: "put",
+        data: obj
+    }).done((res) => {
+
+    });
+}
+
 function getDetails(ticketId)
 {
     let objReq =
@@ -161,8 +218,13 @@ function getDetails(ticketId)
         let modalTitle = document.getElementById("modalTicketTitle");
         let ticketProgress = document.getElementById("StepProgress");
         let innerProgress = "";
-        let cancelTicketBtn = document.getElementById("cancelTicketBtn");
-        cancelTicketBtn.style.removeProperty("display");
+        let modalFooter = document.getElementById("modalTicketFooter");
+        if (res.status === "Solved" || res.status === "Cancelled") {
+            modalFooter.style.display = "none";
+        }
+        else {
+            modalFooter.innerHTML = `<button id="cancelTicketBtn" type="button" class="btn btn-danger" onclick='confirmCancel("${res.ticketId}")'>Cancel Ticket</button>`;
+        }
         switch (res.status)
         {
             case "In Progress":
@@ -195,7 +257,6 @@ function getDetails(ticketId)
                 break;
             case "Solved":
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-success">${res.status}</span>`;
-                cancelTicketBtn.style.display = "none";
                 innerProgress = `
                     <li><time class="done"></time><span><strong>In Progress</strong></span></li>
                     <li><time class="done"></time><span><strong>Assigned to </strong> ${res.teamLeadName}</span></li>
@@ -230,15 +291,42 @@ function getDetails(ticketId)
                 `;
                 }
                 break;
-            default:
+            case "Declined":
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
-                cancelTicketBtn.style.display = "none";
                 innerProgress = `
                     <li><time class="done"></time><span><strong>In Progress</strong></span></li>
                     <li><time class="done"></time><span>&emsp;</span></li>
                     <li><time class="done"></time><span>&emsp;</span></li>
                     <li><time class="done"></time><span><strong>Declined</strong></span></li>
                 `;
+                break;
+                break;
+            default:
+                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
+                if (res.employeeName != null) {
+                    innerProgress = `
+                    <li><time class="done"></time><span><strong>In Progress</strong></span></li>
+                    <li><time class="done"></time><span><strong>Assigned to </strong> ${res.teamLeadName}</span></li>
+                    <li><time class="done"></time><span><strong>Handled by </strong> ${res.employeeName}</span></li>
+                    <li><time class="done"></time><span><strong>Cancelled</strong></span></li>
+                `;
+                }
+                else if (res.teamLeadName != null) {
+                    innerProgress = `
+                    <li><time class="done"></time><span><strong>In Progress</strong></span></li>
+                    <li><time class="done"></time><span><strong>Assigned to </strong> ${res.teamLeadName}</span></li>
+                    <li><time class="done"></time><span><strong>Handled by </strong> -</span></li>
+                    <li><time class="done"></time><span><strong>Cancelled</strong></span></li>
+                `;
+                }
+                else {
+                    innerProgress = `
+                    <li><time class="done"></time><span><strong>In Progress</strong></span></li>
+                    <li><time class="done"></time><span><strong>Assigned to </strong> - </span></li>
+                    <li><time class="done"></time><span><strong>Handled by </strong> - </span></li>
+                    <li><time class="done"></time><span><strong>Cancelled</strong></span></li>
+                `;
+                }
                 break;
         }
         ticketProgress.innerHTML = innerProgress;
@@ -254,9 +342,6 @@ function getDetails(ticketId)
         //{
         //    modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
         //}
-
-        let ticketId = document.getElementById("ticketId");
-        ticketId.innerHTML = res.ticketId;
         
         document.getElementById("ticket-detail-createddate").innerHTML = "&emsp;" + moment(res.createdAt).format('DD MMMM yyyy HH:mm');
         document.getElementById("ticket-detail-cname").innerHTML = "&emsp;" + res.customerName;
@@ -324,8 +409,12 @@ function getDetails(ticketId)
 
         }
         commentDiv.innerHTML = commentSection;
-        addCommentDiv.innerHTML = addCommentButton;
 
+        if (res.status !== "Cancelled") {
+            addCommentDiv.innerHTML = addCommentButton;
+            let ticketId = document.getElementById("ticketId");
+            ticketId.innerHTML = res.ticketId;
+        }
         
 
         for (var i = 0; i < res.commentSenderId.length; i++)
