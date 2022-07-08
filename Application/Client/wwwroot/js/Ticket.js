@@ -219,11 +219,37 @@ function getDetails(ticketId)
         let ticketProgress = document.getElementById("StepProgress");
         let innerProgress = "";
         let modalFooter = document.getElementById("modalTicketFooter");
-        if (res.status === "Solved" || res.status === "Cancelled") {
+        let currUserRole = document.getElementById("currUserRole").innerHTML;
+        let btnSubmit;
+        if (currUserRole === "Developer") {
+            let divSubmit = document.getElementById("divSubmitSolution");
+            divSubmit.innerHTML = `<button id="submitSolution" style="display:none" class="btn bg-gradient-info" onclick='submitSolution("${res.ticketId}")'>Submit Solution</button>`;
+
+            btnSubmit = document.getElementById("submitSolution");
+            if (res.status === "Submitted") {
+                btnSubmit.style.removeProperty("display");
+            }
+        }
+        let btnAccept;
+        let btnDecline;
+        if (currUserRole === "Customer") {
+            let divSelect = document.getElementById("divSelectSolution");
+            divSelect.innerHTML = `<button id="confirmWork" class="btn bg-gradient-success" onclick='confirmWork("${res.ticketId}")'>Accept Solution</button>
+                                                            <button id="denyWork" class="btn bg-gradient-danger" onclick='denyWork("${res.ticketId}")'>Decline Solution</button>`;
+
+            btnAccept = document.getElementById("confirmWork");
+            btnAccept.style.display = "none";
+            btnDecline = document.getElementById("denyWork");
+            btnDecline.style.display = "none";
+        }
+        if (res.status === "Solved" || res.status === "Cancelled" || res.status === "Declined") {
             modalFooter.style.display = "none";
         }
         else {
-            modalFooter.innerHTML = `<button id="cancelTicketBtn" type="button" class="btn btn-danger" onclick='confirmCancel("${res.ticketId}")'>Cancel Ticket</button>`;
+            if (currUserRole === "Customer") {
+                modalFooter.style.removeProperty("display");
+                modalFooter.innerHTML = `<button id="cancelTicketBtn" type="button" class="btn btn-danger" onclick='confirmCancel("${res.ticketId}")'>Cancel Ticket</button>`;
+            }
         }
         switch (res.status)
         {
@@ -290,6 +316,22 @@ function getDetails(ticketId)
                     <li><time class="incomplete"></time><span><strong>Solved</strong></span></li>
                 `;
                 }
+                break;
+            case "Submitted":
+                modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-warning">In Progress</span>`;
+                if (currUserRole === "Developer") {
+                    btnSubmit.style.display = "none";
+                }
+                else if (currUserRole === "Customer") {
+                    btnAccept.style.removeProperty("display");
+                    btnDecline.style.removeProperty("display");
+                }
+                innerProgress = `
+                    <li><time class="done"></time><span><strong>In Progress</strong></span></li>
+                    <li><time class="done"></time><span><strong>Assigned to </strong> ${res.teamLeadName}</span></li>
+                    <li><time class="current"></time><span><strong>Handled by </strong> ${res.employeeName}</span></li>
+                    <li><time class="incomplete"></time><span><strong>Solved</strong></span></li>
+                `;
                 break;
             case "Declined":
                 modalTitle.innerHTML = `${res.ticketId} <span class="badge badge-danger">${res.status}</span>`;
@@ -366,7 +408,7 @@ function getDetails(ticketId)
         let addCommentButton = `<label for="ticket-detail-inputComment">Comments</label>
                                 <input type="text" class="form-control" id="ticket-detail-inputComment" placeholder="Add comment to this ticket...">
                                 <span id="ticketId" style="display:none"></span>
-                                <button id="addCommentBtn" type="button" class="btn btn-primary mt-2" onclick='addComment("${res.ticketId}")'>Comment</button>`;
+                                <button id="addCommentBtn" type="button" class="btn bg-gradient-info mt-2" onclick='addComment("${res.ticketId}")'>Comment</button>`;
         let addCommentDiv = document.getElementById("addCommentDiv");
         let commentDiv = document.getElementById("divComments");
         let commentSection = "";
@@ -384,7 +426,7 @@ function getDetails(ticketId)
                         <br>
                         <span id="commentSectionSpan${res.commentOrder[i]}">&emsp;${res.commentBody[i]}</span>
                         <input id="commentSectionInput${res.commentOrder[i]}" type="text" class="form-control mb-2" value="${res.commentBody[i]}" style="display:none"></input>
-                        <button id="submitEdit${res.commentOrder[i]}" class="btn btn-primary btn-sm" style="display:none" onclick="submitEdit(${res.commentOrder[i]})">Submit</button>
+                        <button id="submitEdit${res.commentOrder[i]}" class="btn bg-gradient-info btn-sm" style="display:none" onclick="submitEdit(${res.commentOrder[i]})">Submit</button>
                     </div>
                 </div>
                     `;
@@ -399,7 +441,7 @@ function getDetails(ticketId)
                         <br>
                         <span id="commentSectionSpan${res.commentOrder[i]}">&emsp;${res.commentBody[i]}</span>
                         <input id="commentSectionInput${res.commentOrder[i]}" type="text" class="form-control mb-2" value="${res.commentBody[i]}" style="display:none"></input>
-                        <button id="submitEdit${res.commentOrder[i]}" class="btn btn-primary btn-sm" style="display:none" onclick="submitEdit(${res.commentOrder[i]})">Submit</button>
+                        <button id="submitEdit${res.commentOrder[i]}" class="btn bg-gradient-info btn-sm" style="display:none" onclick="submitEdit(${res.commentOrder[i]})">Submit</button>
                     </div>
                 </div>
                     `;
@@ -444,6 +486,138 @@ function getDetails(ticketId)
 
 }
 
+function submitSolution(ticketId) {
+    Swal.fire({
+        title: 'Submit solution?',
+        text: "Are you sure you want to submit?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let objReq =
+            {
+                TicketId: ticketId,
+                Status: "Submitted"
+            }
+            $.ajax({
+                url: "../Customer/UpdateTicket",
+                type: "put",
+                data: objReq
+            }).done((res) => {
+                if (res == 200) {
+                    Swal.fire(
+                        'Success!',
+                        'Your request has been submitted',
+                        'success'
+                    ).then((result) => {
+                        location.reload();
+                    });
+                }
+                else {
+                    Swal.fire(
+                        'Failed!',
+                        'Your request has not been submitted',
+                        'error'
+                    );
+                }
+            });
+
+        }
+    })
+}
+
+function confirmWork(ticketId) {
+    Swal.fire({
+        title: 'Accept solution?',
+        text: "Are you sure you want to accept this solution?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let objReq =
+            {
+                TicketId: ticketId,
+                Status: "Solved"
+            }
+            $.ajax({
+                url: "../Customer/UpdateTicket",
+                type: "put",
+                data: objReq
+            }).done((res) => {
+                if (res == 200) {
+                    Swal.fire(
+                        'Success!',
+                        'Your request has been submitted',
+                        'success'
+                    ).then((result) => {
+                        location.reload();
+                    });
+                }
+                else {
+                    Swal.fire(
+                        'Failed!',
+                        'Your request has not been submitted',
+                        'error'
+                    );
+                }
+            });
+
+        }
+    })
+}
+
+function denyWork(ticketId) {
+    Swal.fire({
+        title: 'Decline solution?',
+        text: "Are you sure you want to decline this solution?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let objReq =
+            {
+                TicketId: ticketId,
+                Status: "In Progress"
+            }
+            $.ajax({
+                url: "../Customer/UpdateTicket",
+                type: "put",
+                data: objReq
+            }).done((res) => {
+                if (res == 200) {
+                    Swal.fire(
+                        'Success!',
+                        'Your request has been submitted',
+                        'success'
+                    ).then((result) => {
+                        location.reload();
+                    });
+                }
+                else {
+                    Swal.fire(
+                        'Failed!',
+                        'Your request has not been submitted',
+                        'error'
+                    );
+                }
+            });
+
+        }
+    })
+}
+
 $(document).ready(function () {
     let cardDiv = document.getElementById("cardDiv");
     let cardCons = "";
@@ -469,7 +643,7 @@ $(document).ready(function () {
                                     <h5 class="card-title"><span class="badge badge-info mr-2">${res[i].ticketCategory}</span><span class="badge badge-success">${res[i].ticketType}</span> ${res[i].ticketId}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">${res[i].status}</h6>
                                     <p class="card-text">${res[i].description}</p>
-                                    <a class="btn btn-primary" data-toggle="modal" data-target="#modalTicket" onclick='getDetails("${res[i].ticketId}")'>Details</a>
+                                    <a class="btn bg-gradient-info" data-toggle="modal" data-target="#modalTicket" onclick='getDetails("${res[i].ticketId}")'>Details</a>
                                 </div>
                             </div>
                       </div>

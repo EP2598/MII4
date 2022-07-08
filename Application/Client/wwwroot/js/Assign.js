@@ -17,7 +17,7 @@
                     <td>${value.ticketId}</td>
                     <td>${value.customerName}</td>
                     <td>${value.teamLeadName}</td>
-                    <td>${value.employeeName}</td>`
+                    <td>${value.employeeName}</td>`;
         if (value.ticketCategory == 'Other') {
             text += `<td>
                         <select class="form-control ticket-type-${value.ticketId}" id="${value.ticketId}">
@@ -27,8 +27,24 @@
                         </select>
                       </td>
                      `;
+        } else if (value.ticketCategory == "IT Support") {
+            text += `<td>
+                        <select class="form-control ticket-type-${value.ticketId}" id="${value.ticketId}">
+                            <option value="Other">Other</option>
+                            <option value="Administration">Administration</option>
+                            <option value="IT Support" selected>IT Support</option>
+                        </select>
+                      </td>
+                     `;
         } else {
-            text += `<td>${value.ticketCategory}</td>`;
+            text += `<td>
+                        <select class="form-control ticket-type-${value.ticketId}" id="${value.ticketId}">
+                            <option value="Other">Other</option>
+                            <option value="Administration" selected>Administration</option>
+                            <option value="IT Support">IT Support</option>
+                        </select>
+                      </td>
+                     `;
         }
 
         text += `<td>${value.ticketType}</td>

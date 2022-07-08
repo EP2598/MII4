@@ -7,6 +7,9 @@
 {
     var userAccountId = User.Claims.Where(x => x.Type.Equals("Id")).FirstOrDefault().Value;
     <p id="currUserAccountId" style="display:none">@userAccountId</p>
+    var sesuatu = User.Claims;
+    var userRole = User.Claims.Where(x => x.Type.Equals("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")).FirstOrDefault().Value;
+    <p id="currUserRole" style="display:none">@userRole</p>
 }
 
 
@@ -73,6 +76,20 @@
                                                     <label for="ticket-detail-description">Description</label>
                                                     <textarea class="form-control" id="ticket-detail-description" rows="5" readonly></textarea>
                                                 </div>
+                                                <div class="form-row">
+                                                    @if (User.IsInRole("Developer"))
+                                                    {
+                                                        <div id="divSubmitSolution" class="col-md-4 mt-1 mb-2">
+                                                        </div>
+                                                    }
+                                                    else if (User.IsInRole("Customer"))
+                                                    {
+                                                        <div id="divSelectSolution" class="col-md-8 mt-1 mb-2">
+                                                            
+                                                        </div>
+                                                    }
+                                                </div>
+                                                
                                             </div>
                                             <!-- Progress Bar -->
                                             <div class="col-lg-4 mb-2">
