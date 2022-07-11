@@ -17,6 +17,8 @@
         <div class="row">
             <div class="col-8">
                 <div class="numbers">
+                    <h4>Welcome back, @User.Claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value</h4>
+                    <br />
                     @if (User.IsInRole("Admin"))
                     {
                         <p class="text-sm mb-0 text-uppercase font-weight-bold">System Statistic</p>

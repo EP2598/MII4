@@ -1,4 +1,6 @@
 ﻿function authMe() {
+    let btnSubmit = document.getElementById("btnSubmit");
+    btnSubmit.disabled = true;
     let objReq = {
         Email: document.getElementById("floatingInput").value,
         Password: document.getElementById("floatingPassword").value
@@ -8,7 +10,7 @@
         url: "../Login/Auth/",
         data: objReq
     }).done((res) => {
-        console.log(res);
+        btnSubmit.disabled = false;
         switch (res.statusCode) {
             case 200:
                 setTimeout(function () {

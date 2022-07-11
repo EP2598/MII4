@@ -1,5 +1,7 @@
 ﻿function doRequest()
 {
+    let btnSubmit = document.getElementById("btnSubmit");
+    btnSubmit.disabled = true;
     let objReq =
     {
         CustomerID: "",
@@ -28,10 +30,12 @@
                     title: 'Request submitted!',
                     html: 'Ticket has been submitted.'
                 }).then(function () {
+                    btnSubmit.disabled = false;
                     window.location.assign("../Customer/MyTicket");
                 });
                 break;
             default:
+                btnSubmit.disabled = false;
                 Swal.fire({
                     icon: 'error',
                     title: 'Request failed!',
@@ -60,7 +64,6 @@ function addComment(ticketId)
         url: "../Comments/AddComment/",
         data: objReq
     }).done((res) => {
-        console.log(res);
         $("#modalTicket").modal("toggle");
         getDetails(ticketId);
         $("#modalTicket").modal("toggle");
@@ -92,6 +95,7 @@ function editComment(commentId)
     comSecSpan.style.display = "none";
     comSecInput.style.removeProperty("display");
     btnSubmit.style.removeProperty("display");
+    btnSubmit.disabled = false;
     editSec.style.display = "none";
     editSec.disabled = true;
     cancelSec.style.removeProperty("display");
@@ -125,6 +129,9 @@ function cancelComment(commentId) {
 
 function submitEdit(commentId)
 {
+    let submitBtnId = "submitEdit" + commentId;
+    let submitBtn = document.getElementById(submitBtnId);
+    submitBtn.disabled = true;
     let commentSectionInput = "commentSectionInput" + commentId;
     let comSecInput = document.getElementById(commentSectionInput).value;
 
@@ -139,7 +146,29 @@ function submitEdit(commentId)
         url: "../Comments/EditComment/",
         data: objReq
     }).done((res) => {
-        console.log(res);
+        let commentSectionSpan = "commentSectionSpan" + commentId;
+        let comSecSpan = document.getElementById(commentSectionSpan);
+
+        let commentSectionInput = "commentSectionInput" + commentId;
+        let comSecInput = document.getElementById(commentSectionInput);
+
+        let buttonSubmit = "submitEdit" + commentId;
+        let btnSubmit = document.getElementById(buttonSubmit);
+
+        let editSection = "editComment" + commentId;
+        let editSec = document.getElementById(editSection);
+
+        let cancelSection = "cancelComment" + commentId;
+        let cancelSec = document.getElementById(cancelSection);
+
+        comSecSpan.style.removeProperty("display");
+        comSecSpan.innerHTML = objReq.Description;
+        comSecInput.style.display = "none";
+        btnSubmit.style.display = "none";
+        cancelSec.style.display = "none";
+        cancelSec.disabled = true;
+        editSec.style.removeProperty("display");
+        editSec.disabled = false;
     });
 }
 
@@ -223,11 +252,11 @@ function getDetails(ticketId)
         let btnSubmit;
         if (currUserRole === "Developer") {
             let divSubmit = document.getElementById("divSubmitSolution");
-            divSubmit.innerHTML = `<button id="submitSolution" style="display:none" class="btn bg-gradient-info" onclick='submitSolution("${res.ticketId}")'>Submit Solution</button>`;
+            divSubmit.innerHTML = `<button id="submitSolution" class="btn bg-gradient-info" onclick='submitSolution("${res.ticketId}")'>Submit Solution</button>`;
 
             btnSubmit = document.getElementById("submitSolution");
             if (res.status === "Submitted") {
-                btnSubmit.style.removeProperty("display");
+                btnSubmit.style.display = "none";
             }
         }
         let btnAccept;
@@ -487,6 +516,8 @@ function getDetails(ticketId)
 }
 
 function submitSolution(ticketId) {
+    let btnSubmit = document.getElementById("submitSolution");
+    btnSubmit.disabled = true;
     Swal.fire({
         title: 'Submit solution?',
         text: "Are you sure you want to submit?",
@@ -514,10 +545,12 @@ function submitSolution(ticketId) {
                         'Your request has been submitted',
                         'success'
                     ).then((result) => {
+                        btnSubmit.disabled = false;
                         location.reload();
                     });
                 }
                 else {
+                    btnSubmit.disabled = false;
                     Swal.fire(
                         'Failed!',
                         'Your request has not been submitted',
@@ -531,6 +564,11 @@ function submitSolution(ticketId) {
 }
 
 function confirmWork(ticketId) {
+    let btnConfirm = document.getElementById("confirmWork");
+    let btnDeny = document.getElementById("denyWork");
+
+    btnConfirm.disabled = true;
+    btnDeny.disabled = true;
     Swal.fire({
         title: 'Accept solution?',
         text: "Are you sure you want to accept this solution?",
@@ -553,6 +591,8 @@ function confirmWork(ticketId) {
                 data: objReq
             }).done((res) => {
                 if (res == 200) {
+                    btnConfirm.disabled = false;
+                    btnDeny.disabled = false;
                     Swal.fire(
                         'Success!',
                         'Your request has been submitted',
@@ -562,6 +602,8 @@ function confirmWork(ticketId) {
                     });
                 }
                 else {
+                    btnConfirm.disabled = false;
+                    btnDeny.disabled = false;
                     Swal.fire(
                         'Failed!',
                         'Your request has not been submitted',
