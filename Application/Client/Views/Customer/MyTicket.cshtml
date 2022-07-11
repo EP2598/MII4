@@ -22,6 +22,9 @@
                     <div id="cardDiv">
 
                     </div>
+                    <div id="pagination-container">
+
+                    </div>
                     <div class="modal fade border-top" id="modalTicket" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -85,11 +88,11 @@
                                                     else if (User.IsInRole("Customer"))
                                                     {
                                                         <div id="divSelectSolution" class="col-md-8 mt-1 mb-2">
-                                                            
+
                                                         </div>
                                                     }
                                                 </div>
-                                                
+
                                             </div>
                                             <!-- Progress Bar -->
                                             <div class="col-lg-4 mb-2">
@@ -116,7 +119,7 @@
                                     </div>
                                 </div>
                                 <div id="modalTicketFooter" class="modal-footer">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -131,6 +134,7 @@
 
 @section CSS {
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/assets/css/pagination.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
 }
 
@@ -139,5 +143,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/assets/js/pagination.min.js" asp-append-version="true"></script>
     <script src="~/js/Ticket.js" asp-append-version="true"></script>
 }
