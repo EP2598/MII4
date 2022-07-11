@@ -87,7 +87,19 @@ $(document).ready(function () {
                 $.ajax({
                     url: "../Customer/UpdateTicket",
                     type: "put",
-                    data: obj
+                    data: obj,
+                    beforeSend: (function () {
+                        var loading = $("#loading");
+                        loading.addClass("show");
+                        loading.css("display", "block");
+                        loading.append(`<div class="modal-backdrop fade show"></div>`)
+                    }),
+                    complete: (function () {
+                        var loading = $("#loading");
+                        loading.removeClass("show");
+                        loading.css("display", "none");
+                        loading.remove($(".modal-backdrop"));
+                    })
                 }).done((res) => {
                     switch (res) {
                         case 200:

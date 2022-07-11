@@ -660,6 +660,7 @@ function denyWork(ticketId) {
     })
 }
 
+
 $(document).ready(function () {
     let cardDiv = document.getElementById("cardDiv");
     let cardCons = "";
@@ -675,25 +676,39 @@ $(document).ready(function () {
         data: objReq
     }).done((res) => {
         console.log(res);
-
-        for (var i = 0; i < res.length; i++)
-        {
-            cardCons += `
+        let cardDiv = $("#cardDiv");
+        $('#pagination-container').pagination({
+            dataSource: res,
+            pageSize: 5,
+            ulClassName: 'pagination pagination-primary',
+            callback: function (data, pagination) {
+                /*$("#cardDiv").empty();*/
+               /* console.log(data);*/
+                for (var i = 0; i < data.length; i++) {
+                    cardCons += `
                     <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title"><span class="badge badge-info mr-2">${res[i].ticketCategory}</span><span class="badge badge-success">${res[i].ticketType}</span> ${res[i].ticketId}</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">${res[i].status}</h6>
-                                    <p class="card-text">${res[i].description}</p>
-                                    <a class="btn bg-gradient-info" data-toggle="modal" data-target="#modalTicket" onclick='getDetails("${res[i].ticketId}")'>Details</a>
+                                    <h5 class="card-title"><span class="badge badge-info mr-2">${data[i].ticketCategory}</span><span class="badge badge-success">${data[i].ticketType}</span> ${data[i].ticketId}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">${data[i].status}</h6>
+                                    <p class="card-text">${data[i].description}</p>
+                                    <a class="btn bg-gradient-info" data-toggle="modal" data-target="#modalTicket" onclick='getDetails("${data[i].ticketId}")'>Details</a>
                                 </div>
                             </div>
                       </div>
                     <br>
                 `;
-           
-        }
-        cardDiv.innerHTML = cardCons;
+
+                }
+                /*var html = templateData(data);*/
+                cardDiv.html(cardCons);
+                $(".pagination li").addClass("page-item");
+                $(".pagination li a").addClass("page-link");
+                $(".pagination li").css("border", "0px");
+                cardCons = "";
+            }
+        })
+      
     }).fail((err) => {
         console.log("My Ticket - Error Log");
         console.log(err);
