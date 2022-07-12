@@ -52,12 +52,24 @@
                 @if (User.IsInRole("Team Lead") || User.IsInRole("Admin"))
                 {
                     <li class="nav-item">
-                        <a class="nav-link active" asp-controller="Admin" asp-action="Assign">
-                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Assign Tickets</span>
-                        </a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="nav-link active" asp-controller="Admin" asp-action="Assign">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Assign Tickets</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="nav-link active" asp-controller="TeamLead" asp-action="Assign">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Assign Tickets</span>
+                            </a>
+                        }
                     </li>
 
                 }
@@ -87,7 +99,7 @@
                             <span class="nav-link-text ms-1">Solved Tickets</span>
                         </a>
                     </li>
-}
+                }
 
                 @if (User.IsInRole("Admin"))
                 {
@@ -99,7 +111,7 @@
                             <span class="nav-link-text ms-1">Add User</span>
                         </a>
                     </li>
-}
+                }
 
             </ul>
         </div>

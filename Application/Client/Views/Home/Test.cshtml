@@ -44,33 +44,63 @@
                     }
                     else if (User.IsInRole("Team Lead"))
                     {
-                        <div class="form-row">
-                            <div class="col-md-8 mb-3">
-                                <div id="cardTotalTickets" class="card mb-2">
-                                    <div class="card-header" data-toggle="collapse" data-target="#innerSelfDetail" aria-expanded="false">
-                                        Subordinate's Total Ticket
-                                    </div>
-                                    <div id="innerSelfDetail" class="card-body">
+                <div class="form-row">
+                    <div class="col-md-8 mb-3">
+                        <div id="cardTotalTickets" class="card mb-2">
+                            <div class="card-header" data-toggle="collapse" data-target="#innerSelfDetail" aria-expanded="false">
+                                Subordinate's Total Ticket
+                            </div>
+                            <div id="innerSelfDetail" class="card-body">
 
-                                    </div>
-                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div id="cardSelfInformation" class="card mb-2">
+                            <div class="card-header" data-toggle="collapse" data-target="#innerSelfInformation" aria-expanded="false">
+                                My Information
+                            </div>
+                            <div id="innerSelfInformation" class="card-body">
+                                <label for="pName">Name</label>
+                                <br />
+                                <p class="mt-1" id="pName">@User.Claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value</p>
+                                <label for="pEmail">Email</label>
+                                <br />
+                                <p class="mt-1" id="pEmail">@User.Claims.Where(x => x.Type.Equals("Email")).FirstOrDefault().Value</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     }
                     else
                     {
-                        <div class="form-row">
-                            <div class="col-md-8 mb-3">
-                                <div id="cardTotalTickets" class="card mb-2">
-                                    <div class="card-header" data-toggle="collapse" data-target="#innerSelfDetail" aria-expanded="false">
-                                        My Tickets Status
-                                    </div>
-                                    <div id="innerSelfDetail" class="card-body">
+                <div class="form-row">
+                    <div class="col-md-8 mb-3">
+                        <div id="cardTotalTickets" class="card mb-2">
+                            <div class="card-header" data-toggle="collapse" data-target="#innerSelfDetail" aria-expanded="false">
+                                My Tickets Status
+                            </div>
+                            <div id="innerSelfDetail" class="card-body">
 
-                                    </div>
-                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div id="cardSelfInformation" class="card mb-2">
+                            <div class="card-header" data-toggle="collapse" data-target="#innerSelfInformation" aria-expanded="false">
+                                My Information
+                            </div>
+                            <div id="innerSelfInformation" class="card-body">
+                                <label for="pName">Name</label>
+                                <br />
+                                <p class="mt-1" id="pName">@User.Claims.Where(x => x.Type.Equals("Name")).FirstOrDefault().Value</p>
+                                <label for="pEmail">Email</label>
+                                <br />
+                                <p class="mt-1" id="pEmail">@User.Claims.Where(x => x.Type.Equals("Email")).FirstOrDefault().Value</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     }
                 </div>
             </div>
